@@ -1,0 +1,1059 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AMCAT Mock Assessment</title>
+<style>
+:root{--navy:#14325c;--navy2:#1e4a86;--orange:#e3262c;--bg:#eef1f5;--line:#d5dbe3;--text:#1f2937;--muted:#6b7280;--green:#1a8f4c;--red:#d93025;--soft:#f6f8fb}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{font-family:"Segoe UI",Arial,sans-serif;background:var(--bg);color:var(--text);font-size:15px;min-height:100vh}
+.hidden{display:none!important}
+button{font-family:inherit;cursor:pointer}
+input,select,textarea{font-family:inherit}
+
+/* header */
+header.top{background:#fff;border-bottom:3px solid var(--orange);height:64px;display:flex;align-items:center;padding:0 22px;gap:18px;position:sticky;top:0;z-index:20;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.logo{display:flex;align-items:center}
+.logo img{height:40px;display:block}
+.sec-title{flex:1;font-weight:600;color:var(--navy);font-size:17px;padding-left:18px;border-left:1px solid var(--line);min-height:28px;display:flex;align-items:center}
+.cand{color:var(--muted);font-size:12px;text-align:right;line-height:1.4}
+.cand b{color:var(--text);font-size:14px}
+.timer{background:var(--navy);color:#fff;padding:5px 14px;border-radius:4px;text-align:center;min-width:116px}
+.timer small{display:block;font-size:10px;letter-spacing:1.2px;opacity:.8;text-transform:uppercase}
+.timer b{font-size:21px;font-family:Consolas,"Courier New",monospace;letter-spacing:1px}
+.timers{display:flex;gap:8px}
+.timer.all{background:#eef1f6;color:var(--navy)}
+.timers.warn #tSec{background:var(--red)}
+.timers.blink #tSec b{animation:blink 1s steps(2) infinite}
+@keyframes blink{50%{opacity:.25}}
+
+.subbar{background:var(--navy);color:#fff;display:flex;align-items:center;padding:8px 22px;gap:16px;font-size:14px;position:sticky;top:64px;z-index:19}
+.dots{display:flex;gap:5px;flex:1;flex-wrap:wrap}
+.dot{width:11px;height:11px;border-radius:50%;background:rgba(255,255,255,.22)}
+.dot.done{background:var(--orange)}
+.dot.cur{background:#fff;box-shadow:0 0 0 2px rgba(255,255,255,.35)}
+
+.btn{background:var(--navy2);color:#fff;border:0;padding:10px 28px;border-radius:4px;font-size:15px;font-weight:600;transition:filter .15s}
+.btn:hover{filter:brightness(1.12)}
+.btn:disabled{background:#a7b0bd;cursor:not-allowed;filter:none}
+.btn.orange{background:var(--orange)}
+.btn.green{background:var(--green)}
+.btn.red{background:var(--red)}
+.btn.sm{padding:6px 14px;font-size:13px}
+.btn.ghost{background:transparent;border:1px solid rgba(255,255,255,.55);padding:5px 12px;font-size:13px;font-weight:500}
+.btn.light{background:#fff;color:var(--navy);border:1px solid var(--line)}
+
+main{max-width:1240px;margin:22px auto;padding:0 22px}
+.card{background:#fff;border:1px solid var(--line);border-radius:6px;padding:26px 30px}
+h1,h2,h3{color:var(--navy);margin:0 0 12px}
+h1{font-size:24px}h2{font-size:20px}h3{font-size:16px}
+.muted{color:var(--muted)}
+.center{text-align:center}
+.narrow{max-width:640px;margin:40px auto}
+.field{margin:14px 0}
+.field label{display:block;font-size:13px;font-weight:600;margin-bottom:5px;color:#374151}
+.field input[type=text]{width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:4px;font-size:15px}
+.field input[type=text]:focus{outline:2px solid var(--navy2);border-color:transparent}
+.checks label{display:flex;align-items:center;gap:10px;padding:9px 12px;border:1px solid var(--line);border-radius:4px;margin-bottom:6px;font-weight:500;cursor:pointer}
+.checks label span.m{margin-left:auto;color:var(--muted);font-size:13px;font-weight:400}
+table.t{width:100%;border-collapse:collapse;margin:14px 0}
+table.t th,table.t td{border:1px solid var(--line);padding:9px 12px;text-align:left;font-size:14px}
+table.t th{background:var(--soft);color:var(--navy)}
+ol.ins li,ul.ins li{margin:7px 0;line-height:1.5}
+.notice{background:#fff7e8;border-left:4px solid var(--orange);padding:12px 16px;margin:14px 0;font-size:14px;line-height:1.5}
+
+/* MCQ */
+.split{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start}
+.passage{max-height:calc(100vh - 220px);overflow:auto;line-height:1.7;font-size:15px}
+.plabel{font-size:12px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:8px;font-weight:600}
+.qcard{min-height:340px;display:flex;flex-direction:column}
+.qtext{font-size:16.5px;line-height:1.6;white-space:pre-line;margin-bottom:22px}
+.opts{display:flex;flex-direction:column;gap:10px}
+.opt{display:flex;align-items:center;gap:14px;padding:12px 16px;border:1px solid var(--line);border-radius:5px;cursor:pointer;background:#fff;transition:background .1s,border-color .1s}
+.opt:hover{background:var(--soft)}
+.opt input{display:none}
+.opt .ol{width:28px;height:28px;border-radius:50%;border:1.5px solid #9aa5b4;display:flex;align-items:center;justify-content:center;font-weight:600;font-size:13px;color:#4b5563;flex-shrink:0}
+.opt.sel{border-color:var(--navy2);background:#eaf1fb}
+.opt.sel .ol{background:var(--navy2);border-color:var(--navy2);color:#fff}
+.qfoot{margin-top:auto;padding-top:24px;display:flex;justify-content:space-between;align-items:center}
+.diffhint{font-size:12px;color:var(--muted)}
+
+/* question palette (practice mode) */
+.mcqgrid{display:grid;grid-template-columns:minmax(0,1fr) 260px;gap:18px;align-items:start}
+.side{background:#fff;border:1px solid var(--line);border-radius:8px;position:sticky;top:118px;height:calc(100vh - 134px);min-height:430px;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.05)}
+.side-user{display:flex;align-items:center;gap:14px;padding:16px;border-bottom:1px solid var(--line)}
+.avatar{width:46px;height:46px;border-radius:6px;background:#6f7f8f;color:#fff;font-size:22px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.side-user b{font-size:15px;color:#111827;word-break:break-word}
+.legend{display:grid;grid-template-columns:1fr 1fr;gap:10px 8px;padding:14px 14px 12px;font-size:12.5px;color:#374151}
+.legend div{display:flex;align-items:center;gap:8px;line-height:1.2}
+.legend .wide{grid-column:1 / -1}
+.side-h{background:#4a6fa5;color:#fff;padding:9px 14px;font-weight:600;font-size:14px}
+.side-c{padding:10px 14px 4px;font-size:12.5px;color:#4b5563}
+.pal{flex:1;display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:42px;gap:12px 10px;padding:8px 14px 14px;overflow-y:auto;align-content:start}
+.pb{display:inline-flex;align-items:center;justify-content:center;height:42px;border:0;background:#e3e8f0;border-radius:6px;font-weight:600;color:#374151;position:relative;font-size:14px;padding:0}
+.pb:hover{filter:brightness(.96)}
+.pb.an{background:#1f9d55;color:#fff;border-radius:2px;clip-path:polygon(0 0,100% 0,100% 72%,50% 100%,0 72%);padding-bottom:5px}
+.pb.na{background:#e04b3c;color:#fff;border-radius:2px;clip-path:polygon(0 0,100% 0,100% 100%,50% 78%,0 100%);padding-bottom:6px}
+.pb.mr,.pb.am{background:#7b4cc4;color:#fff;border-radius:50%;width:42px;justify-self:center}
+.pb.am::after{content:"✓";position:absolute;right:-3px;bottom:-3px;width:16px;height:16px;border-radius:50%;background:#1f9d55;color:#fff;font-size:10px;line-height:16px;border:1.5px solid #fff}
+.pb.cur{box-shadow:inset 0 0 0 2px #1e3a8a}
+.pb.cur.an,.pb.cur.na{filter:brightness(.88)}
+.pb.mini{height:24px;width:24px;min-width:24px;font-size:11px;flex-shrink:0;cursor:default;justify-self:auto}
+.pb.mini.mr,.pb.mini.am{width:24px}
+.pb.mini.am::after{width:12px;height:12px;line-height:12px;font-size:8px;right:-4px;bottom:-4px}
+.side-f{padding:12px 14px;border-top:1px solid var(--line)}
+.side-f .btn{width:100%;background:var(--orange);border-radius:6px;padding:11px}
+.qfoot.pal-f{flex-wrap:wrap;gap:10px}
+.qfoot.pal-f .grp{display:flex;gap:10px;flex-wrap:wrap}
+.btn.purple{background:var(--orange)}
+.btn.outline{background:#fff;color:var(--navy);border:1px solid #9aa5b4}
+
+/* section tabs + question header */
+.sectabs{display:flex;background:#fff;border:1px solid var(--line);border-radius:8px;margin-bottom:12px;overflow-x:auto}
+.stab{padding:13px 22px 11px;border-bottom:3px solid transparent;white-space:nowrap;display:flex;flex-direction:column;gap:2px}
+.stab b{font-size:14.5px;color:#9aa5b4;font-weight:600}
+.stab small{font-size:11.5px;color:#9aa5b4}
+.stab.on{border-bottom-color:var(--orange);background:#fff6f6}
+.stab.on b{color:var(--navy)}
+.stab.on small{color:var(--orange);font-weight:600}
+.stab.done b{color:#4b5563}
+.stab.done small{color:var(--green);font-weight:600}
+.qhead{display:flex;align-items:center;gap:10px;padding-bottom:14px;margin-bottom:18px;border-bottom:1px solid var(--line);font-size:15px}
+.qhead .tot{color:var(--muted)}
+.secbadge{background:#eef2fb;color:var(--navy2);font-size:12px;font-weight:600;padding:3px 10px;border-radius:12px}
+.marks{font-size:13px;font-weight:600}
+.marks .p{color:var(--green)}.marks .m{color:var(--red);margin-left:8px}
+.flag{border:1px solid #f3c58b;background:#fff8ee;color:#c2410c;border-radius:6px;width:32px;height:28px;font-size:14px}
+.flag.on{background:#7b4cc4;border-color:#7b4cc4;color:#fff}
+
+/* Automata */
+.autowrap{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:16px;height:calc(100vh - 205px);min-height:520px}
+.pane{background:#fff;border:1px solid var(--line);border-radius:6px;display:flex;flex-direction:column;overflow:hidden}
+.pane-h{background:var(--soft);border-bottom:1px solid var(--line);padding:8px 12px;display:flex;align-items:center;gap:8px;font-size:13px}
+.ptabs{display:flex;gap:4px}
+.ptab{border:1px solid var(--line);background:#fff;padding:6px 14px;border-radius:4px;font-size:13px;font-weight:600;color:var(--navy)}
+.ptab.on{background:var(--navy2);color:#fff;border-color:var(--navy2)}
+.ptab .st{font-weight:400;opacity:.8;margin-left:4px}
+.pbody{padding:18px 22px;overflow:auto;flex:1;line-height:1.6;font-size:14.5px}
+.pbody pre,.pbody code{font-family:Consolas,"Courier New",monospace;background:var(--soft);border-radius:3px}
+.pbody code{padding:1px 5px}
+.pbody pre{padding:10px 12px;border:1px solid var(--line);white-space:pre-wrap;font-size:13px}
+.editor{flex:1;display:flex;min-height:0;background:#1e1e1e;font-family:Consolas,"Courier New",monospace;font-size:14px;line-height:21px}
+.gutter{margin:0;padding:10px 8px 10px 10px;color:#6e7681;text-align:right;user-select:none;overflow:hidden;min-width:44px;background:#1a1a1a;border-right:1px solid #2d2d2d;white-space:pre}
+.editor textarea{flex:1;border:0;outline:0;resize:none;background:transparent;color:#d4d4d4;padding:10px 12px;font:inherit;line-height:inherit;white-space:pre;overflow:auto;tab-size:4;caret-color:#fff}
+.console{height:210px;border-top:1px solid var(--line);display:flex;flex-direction:column}
+.console .out{flex:1;overflow:auto;padding:10px 14px;font-family:Consolas,monospace;font-size:13px;white-space:pre-wrap;background:#fbfcfd}
+.tc{border:1px solid var(--line);border-radius:4px;padding:6px 10px;margin-bottom:6px;background:#fff}
+.tc.pass{border-left:4px solid var(--green)}
+.tc.fail{border-left:4px solid var(--red)}
+.ok{color:var(--green);font-weight:600}.bad{color:var(--red);font-weight:600}
+select{padding:5px 8px;border:1px solid var(--line);border-radius:4px;font-size:13px}
+
+/* results */
+.grid4{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px;margin:18px 0}
+.score-card{background:#fff;border:1px solid var(--line);border-radius:6px;padding:18px 20px;border-top:4px solid var(--navy2)}
+.score-card .big{font-size:34px;font-weight:700;color:var(--navy)}
+.score-card .big small{font-size:14px;color:var(--muted);font-weight:500}
+.bar{height:8px;background:#e5e9ef;border-radius:4px;overflow:hidden;margin:8px 0 10px}
+.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--navy2),var(--orange))}
+.kv{font-size:13px;color:var(--muted);line-height:1.8}
+.kv b{color:var(--text)}
+details.rv{background:#fff;border:1px solid var(--line);border-radius:6px;margin-bottom:12px}
+details.rv summary{padding:14px 18px;font-weight:600;color:var(--navy);cursor:pointer}
+.ritem{border-top:1px solid var(--line);padding:14px 18px;font-size:14px;line-height:1.55}
+.ritem .ropt{padding:3px 8px;border-radius:3px;margin:2px 0}
+.ropt.c{background:#e6f4ea;color:#14532d;font-weight:600}
+.ropt.w{background:#fde8e7;color:#7f1d1d;text-decoration:line-through}
+.badge{display:inline-block;font-size:11px;padding:2px 8px;border-radius:10px;background:var(--soft);border:1px solid var(--line);color:var(--muted);margin-left:6px;font-weight:500}
+.expl{background:var(--soft);padding:8px 10px;border-radius:4px;margin-top:6px;font-size:13px}
+
+/* modal + full-screen banner */
+.overlay{position:fixed;inset:0;background:rgba(10,20,40,.55);display:flex;align-items:center;justify-content:center;z-index:100}
+.modal{background:#fff;border-radius:6px;max-width:460px;width:92%;padding:24px 26px;box-shadow:0 10px 40px rgba(0,0,0,.3);border-top:4px solid var(--orange)}
+.modal .acts{display:flex;gap:10px;justify-content:flex-end;margin-top:20px}
+.fsbar{position:fixed;left:0;right:0;top:0;z-index:90;background:var(--red);color:#fff;display:flex;align-items:center;justify-content:center;gap:16px;padding:10px 16px;font-weight:600;box-shadow:0 2px 10px rgba(0,0,0,.25)}
+.fsbar .btn{background:#fff;color:var(--red)}
+.xbtn{background:none;border:0;font-size:18px;line-height:1;color:#555}
+.spinner{display:inline-block;width:14px;height:14px;border:2px solid #c9d3e0;border-top-color:var(--navy2);border-radius:50%;animation:spin .8s linear infinite;vertical-align:-2px;margin-right:6px}
+@keyframes spin{to{transform:rotate(360deg)}}
+footer.disc{text-align:center;font-size:11.5px;color:var(--muted);padding:18px}
+@media(max-width:700px){.mcqgrid{grid-template-columns:1fr}.side{position:static;height:auto}}
+@media(max-width:900px){.split,.autowrap{grid-template-columns:1fr;height:auto}.cand{display:none}}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="logo"></div>
+  <div class="sec-title" id="hdrTitle">Online Assessment</div>
+  <div class="cand" id="hdrCand"></div>
+  <div class="timers hidden" id="timer"><div class="timer" id="tSec"><small>Section</small><b id="timerVal">00:00</b></div></div>
+</header>
+<div class="subbar hidden" id="subbar">
+  <span id="qnum"></span>
+  <div class="dots" id="dots"></div>
+  <button class="btn ghost" id="fsBtn">⛶ Full Screen</button>
+</div>
+
+<!-- LOGIN -->
+<main id="scrLogin">
+  <div class="card narrow">
+    <div class="center" style="margin-bottom:10px"><div class="logo" style="justify-content:center"></div></div>
+    <h2 class="center">Candidate Login</h2>
+    <p class="center muted" style="margin-top:-4px">Employability Assessment – Practice Mock</p>
+    <div class="field"><label>Candidate Name</label><input type="text" id="inName" placeholder="Enter your full name" maxlength="40"></div>
+    <div class="field"><label>Test ID</label><input type="text" id="inId" readonly></div>
+    <div class="field"><label>Modules in this assessment</label><div class="checks" id="secChecks"></div></div>
+    <div class="field"><label>Test mode</label><div class="checks">
+      <label><input type="radio" name="mode" value="palette" checked> Practice mode<span class="m">question palette · mark for review · move freely</span></label>
+      <label><input type="radio" name="mode" value="strict"> Real AMCAT mode<span class="m">adaptive · no going back</span></label>
+    </div></div>
+    <div class="center" style="margin-top:20px"><button class="btn orange" id="loginBtn">Login &amp; Continue</button></div>
+  </div>
+</main>
+
+<!-- INSTRUCTIONS -->
+<main id="scrInstr" class="hidden">
+  <div class="card">
+    <h1>General Instructions</h1>
+    <p class="muted">Please read the following instructions carefully before starting the assessment.</p>
+    <table class="t" id="instrTable"></table>
+    <ol class="ins">
+      <li>The assessment consists of multiple <b>modules</b>. Each module has its <b>own timer</b>. Once a module's time is over, it is submitted automatically.</li>
+      <li id="insA">The test is <b>adaptive</b>: the difficulty of the next question depends on how you answered the current one.</li>
+      <li id="insB">You <b>cannot go back</b> to a previous question and you <b>cannot skip</b> a question. Select an option and click <b>Submit Answer</b> to move ahead.</li>
+      <li>There is <b>no negative marking</b>. Unattempted questions when time runs out are scored as zero.</li>
+      <li>Once you submit a module, you <b>cannot return</b> to it.</li>
+      <li>In the <b>Automata</b> module you write code to solve problems. Use <b>Compile &amp; Run</b> to test against sample cases and <b>Submit Code</b> to evaluate against all test cases (including hidden ones). You may switch between the problems freely within the module.</li>
+      <li>Do not switch tabs, minimise the window or exit full screen. All such activity is <b>recorded</b>.</li>
+      <li>The test runs in full screen. If you exit, use the <b>Back to Full Screen</b> button to return. Every exit is recorded.</li>
+    </ol>
+    <div class="notice">The timer starts the moment you click <b>Start</b> on each module. Keep pen and paper ready, and switch off distractions — treat this exactly like the real thing.</div>
+    <label style="display:flex;gap:10px;align-items:center;margin:18px 0"><input type="checkbox" id="agree"> I have read and understood the instructions. I agree to follow the test rules.</label>
+    <button class="btn orange" id="startTestBtn" disabled>Start Assessment</button>
+  </div>
+</main>
+
+<!-- SECTION INTRO -->
+<main id="scrSecIntro" class="hidden">
+  <div class="card narrow center">
+    <div class="muted" id="siStep" style="font-size:13px;letter-spacing:1px;text-transform:uppercase"></div>
+    <h1 id="siName" style="margin-top:6px"></h1>
+    <table class="t" style="max-width:380px;margin:18px auto"><tr><th>Questions</th><td id="siCount"></td></tr><tr><th>Duration</th><td id="siTime"></td></tr></table>
+    <p class="muted" id="siNote"></p>
+    <button class="btn orange" id="siStart">Start Module</button>
+  </div>
+</main>
+
+<!-- MCQ -->
+<main id="scrMcq" class="hidden" style="max-width:1440px">
+  <div id="mcqBody"></div>
+</main>
+
+<!-- AUTOMATA -->
+<main id="scrAuto" class="hidden" style="max-width:1600px">
+  <div id="autoTabs"></div>
+  <div class="autowrap">
+    <div class="pane">
+      <div class="pane-h"><div class="ptabs" id="ptabs"></div><span style="flex:1"></span><button class="btn red sm" id="finishAuto">Finish Module</button></div>
+      <div class="pbody" id="pstmt"></div>
+    </div>
+    <div class="pane">
+      <div class="pane-h">
+        <label>Language: <select id="langSel"><option value="cpp">C++ (g++ 17)</option><option value="python">Python 3</option><option value="javascript">JavaScript</option></select></label>
+        <span class="muted" id="langNote" style="font-size:12px"></span>
+        <span style="flex:1"></span>
+        <button class="btn light sm" id="resetCode">Reset</button>
+        <button class="btn sm" id="runBtn">▶ Compile &amp; Run</button>
+        <button class="btn orange sm" id="submitCodeBtn">Submit Code</button>
+      </div>
+      <div class="editor"><pre class="gutter" id="gutter">1</pre><textarea id="code" spellcheck="false" autocomplete="off" autocapitalize="off"></textarea></div>
+      <div class="console">
+        <div class="pane-h" style="border-top:0"><b>Output</b><span style="flex:1"></span><span id="codeStatus" class="muted"></span></div>
+        <div class="out" id="codeOut"><span class="muted">Click "Compile &amp; Run" to test your code against the sample test cases.</span></div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- SECTION DONE -->
+<main id="scrSecDone" class="hidden">
+  <div class="card narrow center">
+    <div style="font-size:46px;color:var(--green)">✔</div>
+    <h2 id="sdTitle"></h2>
+    <p class="muted" id="sdMsg"></p>
+    <button class="btn orange" id="sdNext"></button>
+  </div>
+</main>
+
+<!-- RESULTS -->
+<main id="scrResults" class="hidden"></main>
+
+<div id="fsbar" class="fsbar hidden">⚠ You have exited full screen mode. This has been recorded. <button class="btn sm" id="fsReturn">Back to Full Screen</button></div>
+<div id="modalRoot"></div>
+<footer class="disc" id="disc">Unofficial practice mock for self-preparation. Not affiliated with or endorsed by AMCAT / SHL. Question content is original practice material.</footer>
+
+<script>
+/* ======================= QUESTION BANKS ======================= */
+// d = difficulty (1 easy, 2 medium, 3 hard), a = index of correct option, e = explanation, ns = don't shuffle options
+const PASSAGES = {
+  rc1: [
+    "Remote work, once considered a perk reserved for a few, has become mainstream across many industries. Proponents argue that it eliminates commuting time, widens the talent pool, and allows employees to structure their day around their periods of peak productivity.",
+    "Critics, however, point to weakened team cohesion, blurred boundaries between work and home, and the difficulty of mentoring junior staff without face-to-face interaction. Several firms have therefore adopted a hybrid model, asking employees to come to the office on fixed days while working remotely for the rest of the week.",
+    "Early studies suggest that such arrangements retain most of the productivity benefits while partially addressing concerns about collaboration, although the evidence is still far from conclusive."
+  ],
+  rc2: [
+    "The honeybee is often celebrated for producing honey, but its far greater contribution to humanity lies in pollination. Roughly a third of the food crops we consume depend, at least partly, on animal pollinators, and honeybees are among the most important of them.",
+    "In recent decades, beekeepers in several countries have reported unusual losses of colonies. Scientists attribute this decline not to a single cause but to a combination of factors: parasitic mites, pesticide exposure, loss of flowering habitat, and the stress of being transported long distances for commercial pollination.",
+    "Because the causes are intertwined, experts caution that no single ban or remedy is likely to reverse the trend. Instead, they recommend an integrated approach that pairs reduced pesticide use with the restoration of wildflower habitats and better monitoring of hive health."
+  ]
+};
+
+const ENG = [
+  {d:1,q:"Choose the word most similar in meaning to:\nEPHEMERAL",o:["Lasting","Transient","Eternal","Robust"],a:1,e:"Ephemeral = lasting a very short time, i.e. transient."},
+  {d:1,q:"Choose the word opposite in meaning to:\nBENEVOLENT",o:["Kind","Malevolent","Generous","Charitable"],a:1,e:"Benevolent (well-meaning) ↔ malevolent (wishing harm)."},
+  {d:1,q:"Fill in the blank:\nShe has been working in this company ______ 2019.",o:["for","since","from","by"],a:1,e:"'Since' is used with a point in time in perfect continuous tense."},
+  {d:2,q:"Identify the part of the sentence that contains an error:\nEach of the students (A) / have submitted (B) / the assignment (C) / on time. (D)",o:["A","B","C","D"],a:1,ns:1,e:"'Each of' takes a singular verb: 'has submitted'."},
+  {d:2,q:"Choose the word most similar in meaning to:\nUBIQUITOUS",o:["Rare","Omnipresent","Unique","Hidden"],a:1,e:"Ubiquitous = found everywhere."},
+  {d:2,q:"Fill in the blank:\nNeither the manager nor the employees ______ aware of the change.",o:["was","were","is","has been"],a:1,e:"With neither…nor, the verb agrees with the nearer subject ('employees' → plural)."},
+  {d:1,q:"Choose the word opposite in meaning to:\nOBSTINATE",o:["Stubborn","Flexible","Rigid","Adamant"],a:1,e:"Obstinate = stubborn; opposite = flexible."},
+  {d:3,q:"Choose the best improvement for the underlined part:\n\"Hardly had he reached the station when the train left.\"",o:["No improvement","than the train left","then the train left","the train had left"],a:0,ns:1,e:"'Hardly…when' is the correct correlative pair; the sentence is already correct."},
+  {d:3,q:"Fill in the blank:\nThe committee ______ divided in their opinions on the new policy.",o:["is","are","was","has"],a:1,e:"When members of a collective noun act individually (divided opinions), use a plural verb."},
+  {d:1,q:"Choose the word most similar in meaning to:\nCANDID",o:["Frank","Secretive","Shy","Clever"],a:0,e:"Candid = open and honest, i.e. frank."},
+  {d:1,q:"Choose the correct meaning of the idiom:\n\"To beat around the bush\"",o:["To avoid the main topic","To work very hard","To clear a forest","To win easily"],a:0,e:"It means talking indirectly and avoiding the point."},
+  {d:1,q:"Choose the correctly spelt word:",o:["Accommodate","Acommodate","Accomodate","Acomodate"],a:0,e:"Accommodate has double 'c' and double 'm'."},
+  {d:1,q:"Fill in the blank with the correct preposition:\nHe was accused ______ theft.",o:["of","for","with","on"],a:0,e:"'Accused of' is the correct collocation."},
+  {d:2,q:"Identify the part of the sentence that contains an error:\nIf I was (A) / in your place, (B) / I would accept (C) / the offer. (D)",o:["A","B","C","D"],a:0,ns:1,e:"Hypothetical conditions take the subjunctive: 'If I were'."},
+  {d:2,q:"Choose the word opposite in meaning to:\nFRUGAL",o:["Thrifty","Extravagant","Economical","Careful"],a:1,e:"Frugal = sparing with money; opposite = extravagant."},
+  {d:2,q:"Fill in the blank:\nThe news ______ too good to be true.",o:["are","were","was","have been"],a:2,e:"'News' is an uncountable singular noun."},
+  {d:2,q:"Choose the word most similar in meaning to:\nMETICULOUS",o:["Careless","Thorough","Hasty","Lazy"],a:1,e:"Meticulous = showing great attention to detail."},
+  {d:2,q:"Choose the one word for:\n\"One who knows everything\"",o:["Omnipotent","Omniscient","Omnipresent","Optimist"],a:1,e:"Omniscient = all-knowing; omnipotent = all-powerful."},
+  {d:3,q:"Choose the one word for:\n\"A person who endures pain or hardship without showing feelings or complaining\"",o:["Stoic","Cynic","Hedonist","Sceptic"],a:0,e:"A stoic endures hardship without complaint."},
+  {d:3,q:"Fill in the blank:\nScarcely ______ the room when the lights went out.",o:["I had entered","had I entered","I entered","did I entered"],a:1,e:"Negative adverbs like 'scarcely' at the start cause inversion: 'had I entered'."},
+  {d:2,q:"Identify the part of the sentence that contains an error:\nThe number of applicants (A) / have increased (B) / significantly (C) / this year. (D)",o:["A","B","C","D"],a:1,ns:1,e:"'The number of' takes a singular verb: 'has increased'."},
+  {d:3,q:"Choose the word most similar in meaning to:\nALACRITY",o:["Eagerness","Reluctance","Slowness","Anger"],a:0,e:"Alacrity = brisk and cheerful readiness."},
+  {d:3,q:"Choose the word opposite in meaning to:\nAMELIORATE",o:["Improve","Worsen","Enhance","Relieve"],a:1,e:"Ameliorate = make better; opposite = worsen."},
+  {d:3,q:"Fill in the blank:\nI would rather you ______ me the truth yesterday.",o:["tell","told","had told","will tell"],a:2,e:"'Would rather' + past perfect for a wish about the past."},
+  {d:2,q:"Fill in the blank:\nThe book ______ on the table belongs to me.",o:["lying","laying","lain","laid"],a:0,e:"'Lie' (intransitive) → 'lying'. 'Lay' needs an object."},
+  {d:1,q:"Choose the correct connector:\nHe was exhausted, ______ he kept working until midnight.",o:["so","yet","because","therefore"],a:1,e:"Contrast is needed → 'yet'."},
+  {d:2,q:"Rearrange to form a meaningful sentence:\nP: to the station  Q: we hurried  R: to catch  S: the last train",o:["QPRS","QRSP","PQRS","RSQP"],a:0,e:"'We hurried to the station to catch the last train.'"},
+  {d:2,p:"rc1",q:"Which of the following best expresses the main idea of the passage?",o:["Remote work is harmful to productivity","Remote work has both benefits and drawbacks, leading many firms to adopt hybrid models","Hybrid work has been proven superior to all other models","Commuting is the biggest problem faced by employees"],a:1,e:"The passage weighs pros and cons and describes hybrid models as a response."},
+  {d:2,p:"rc1",q:"Which of the following is NOT mentioned as a benefit of remote work?",o:["Elimination of commuting time","A wider talent pool","Easier mentoring of junior staff","Structuring the day around peak productivity"],a:2,e:"Mentoring is mentioned as a difficulty, not a benefit."},
+  {d:1,p:"rc1",q:"The word \"conclusive\" as used in the passage most nearly means:",o:["Decisive","Doubtful","Preliminary","Partial"],a:0,e:"Conclusive = settling an issue; decisive."},
+  {d:3,p:"rc1",q:"The author's attitude towards the evidence on hybrid work is best described as:",o:["Cautious","Enthusiastic","Dismissive","Hostile"],a:0,e:"'Far from conclusive' signals caution."},
+  {d:2,p:"rc2",q:"According to the passage, the honeybee's greatest contribution to humanity is:",o:["Producing honey","Pollinating food crops","Controlling parasitic mites","Producing beeswax"],a:1,e:"\"its far greater contribution… lies in pollination\"."},
+  {d:3,p:"rc2",q:"Why do experts believe that a single remedy is unlikely to reverse the decline in bee colonies?",o:["Because pesticides are not harmful to bees","Because the causes of the decline are interrelated","Because beekeepers refuse to change practices","Because wildflowers cannot be restored"],a:1,e:"\"Because the causes are intertwined…\""},
+  {d:1,p:"rc2",q:"Which of the following is NOT listed as a cause of colony losses?",o:["Parasitic mites","Pesticide exposure","Climate-controlled hives","Loss of flowering habitat"],a:2,e:"Climate-controlled hives are never mentioned."},
+];
+
+const QUANT = [
+  {d:1,q:"What is 20% of 30% of 500?",o:["30","15","60","45"],a:0,e:"0.2 × 0.3 × 500 = 30."},
+  {d:1,q:"A train 150 m long runs at 54 km/h. In how many seconds will it cross a pole?",o:["10 s","12 s","9 s","15 s"],a:0,e:"54 km/h = 15 m/s; 150/15 = 10 s."},
+  {d:1,q:"Find the simple interest on ₹5,000 at 8% per annum for 3 years.",o:["₹1,200","₹1,000","₹1,250","₹1,300"],a:0,e:"5000 × 8 × 3 / 100 = 1200."},
+  {d:2,q:"A can finish a work in 12 days and B in 18 days. In how many days can they finish it working together?",o:["7.2 days","7.5 days","6 days","8 days"],a:0,e:"1/12 + 1/18 = 5/36 → 36/5 = 7.2 days."},
+  {d:1,q:"Find the LCM of 12, 18 and 24.",o:["72","36","144","48"],a:0,e:"12 = 2²·3, 18 = 2·3², 24 = 2³·3 → 2³·3² = 72."},
+  {d:1,q:"Two numbers are in the ratio 3 : 5 and their sum is 64. What is the larger number?",o:["40","24","32","36"],a:0,e:"64 × 5/8 = 40."},
+  {d:2,q:"The price of sugar rises by 25%. By what percent must a family reduce consumption so that expenditure stays the same?",o:["20%","25%","15%","22.5%"],a:0,e:"25/125 × 100 = 20%."},
+  {d:2,q:"What is the compound interest on ₹10,000 at 10% per annum for 2 years, compounded annually?",o:["₹2,100","₹2,000","₹2,200","₹2,010"],a:0,e:"10000 × 1.1² − 10000 = 2100."},
+  {d:2,q:"The average of 5 numbers is 20. When one number is removed, the average becomes 18. What number was removed?",o:["28","22","30","26"],a:0,e:"100 − 4×18 = 28."},
+  {d:2,q:"Two dice are thrown together. What is the probability that the sum is 8?",o:["5/36","1/6","7/36","1/9"],a:0,e:"(2,6),(3,5),(4,4),(5,3),(6,2) → 5/36."},
+  {d:3,q:"In how many distinct ways can the letters of the word LEVEL be arranged?",o:["30","60","120","20"],a:0,e:"5!/(2!·2!) = 30 (L and E each repeat twice)."},
+  {d:3,q:"What is the remainder when 2³¹ is divided by 5?",o:["3","2","4","1"],a:0,e:"Powers of 2 mod 5 cycle 2,4,3,1. 31 mod 4 = 3 → 3."},
+  {d:2,q:"A boat's speed in still water is 10 km/h and the stream flows at 2 km/h. How long will it take to go 48 km downstream and come back?",o:["10 h","9 h","12 h","8 h"],a:0,e:"48/12 + 48/8 = 4 + 6 = 10 h."},
+  {d:3,q:"40 litres of a mixture contains milk and water in the ratio 3 : 1. How much water must be added to make the ratio 3 : 2?",o:["10 L","5 L","15 L","20 L"],a:0,e:"Milk 30, water 10. For 3:2 water must be 20 → add 10 L."},
+  {d:2,q:"How many trailing zeros does 100! have?",o:["24","20","25","22"],a:0,e:"⌊100/5⌋ + ⌊100/25⌋ = 20 + 4 = 24."},
+  {d:3,q:"What is the angle between the hour and minute hands of a clock at 3:40?",o:["130°","140°","120°","125°"],a:0,e:"|30×3 − 5.5×40| = |90 − 220| = 130°."},
+  {d:1,q:"An article costing ₹400 is sold at a loss of 15%. What is the selling price?",o:["₹340","₹360","₹320","₹345"],a:0,e:"400 × 0.85 = 340."},
+  {d:1,q:"Find the HCF of 84 and 126.",o:["42","21","14","63"],a:0,e:"84 = 2²·3·7, 126 = 2·3²·7 → 2·3·7 = 42."},
+  {d:3,q:"Pipes A and B can fill a tank in 20 and 30 minutes respectively. Pipe C can empty it in 15 minutes. If all three are opened together, how long will it take to fill the tank?",o:["60 min","45 min","30 min","40 min"],a:0,e:"1/20 + 1/30 − 1/15 = 1/60 → 60 min."},
+  {d:1,q:"What is the sum of the first 50 natural numbers?",o:["1275","1250","2550","1300"],a:0,e:"50 × 51 / 2 = 1275."},
+  {d:2,q:"A shopkeeper marks goods 40% above cost price and then offers a 20% discount. What is his profit percentage?",o:["12%","20%","15%","10%"],a:0,e:"1.4 × 0.8 = 1.12 → 12%."},
+  {d:2,q:"A sum of money doubles itself in 8 years at simple interest. What is the rate of interest?",o:["12.5%","10%","8%","15%"],a:0,e:"Interest = principal in 8 years → 100/8 = 12.5%."},
+  {d:3,q:"A committee of 3 is to be chosen from 5 men and 4 women. In how many ways can this be done if at least one woman must be included?",o:["74","80","84","64"],a:0,e:"C(9,3) − C(5,3) = 84 − 10 = 74."},
+  {d:2,q:"If x + 1/x = 3, find the value of x² + 1/x².",o:["7","9","11","5"],a:0,e:"(x + 1/x)² − 2 = 9 − 2 = 7."},
+  {d:2,q:"A car travels from A to B at 60 km/h and returns at 40 km/h. What is the average speed for the whole journey?",o:["48 km/h","50 km/h","45 km/h","52 km/h"],a:0,e:"2·60·40/(60+40) = 48 km/h."},
+  {d:1,q:"Find the next term: 2, 6, 12, 20, 30, ?",o:["42","40","36","44"],a:0,e:"Differences 4, 6, 8, 10, 12 → 42."},
+  {d:3,q:"A and B start a business with ₹30,000 and ₹20,000. After 6 months, B adds ₹20,000. What is B's share of a year-end profit of ₹33,000?",o:["₹13,200","₹16,500","₹12,000","₹15,000"],a:1,e:"A: 30k×12 = 360k. B: 20k×6 + 40k×6 = 360k. Ratio 1 : 1 → B gets ₹16,500."},
+  {d:3,q:"The ages of a father and son are in the ratio 7 : 2. After 10 years the ratio will be 9 : 4. What is the father's present age?",o:["35 years","42 years","28 years","49 years"],a:0,e:"(7x+10)/(2x+10) = 9/4 → 28x + 40 = 18x + 90 → x = 5 → 35."},
+];
+
+const LOGIC = [
+  {d:1,q:"Find the next number: 3, 9, 27, 81, ?",o:["243","162","324","729"],a:0,e:"Each term × 3."},
+  {d:1,q:"If CAT is coded as DBU, how is DOG coded?",o:["EPH","EPG","CNF","DPH"],a:0,e:"Each letter is shifted +1."},
+  {d:2,q:"Ravi walks 10 m north, turns right and walks 5 m, then turns right again and walks 10 m. How far is he from the starting point?",o:["5 m","10 m","15 m","25 m"],a:0,e:"He ends 5 m east of the start."},
+  {d:1,q:"Pointing to a man, Riya says, \"He is the son of my mother's only brother.\" How is the man related to Riya?",o:["Cousin","Brother","Uncle","Nephew"],a:0,e:"Mother's brother = maternal uncle; his son = cousin."},
+  {d:1,q:"Find the odd one out:",o:["Apple","Mango","Potato","Banana"],a:2,e:"Potato is a vegetable; the rest are fruits."},
+  {d:2,q:"Statements:\nAll cats are animals.\nSome animals are dogs.\n\nConclusions:\nI. Some cats are dogs.\nII. Some dogs are animals.",o:["Only I follows","Only II follows","Both I and II follow","Neither follows"],a:1,ns:1,e:"II is the converse of 'some animals are dogs'. I does not follow."},
+  {d:1,q:"Find the next number: 1, 4, 9, 16, 25, ?",o:["36","30","49","35"],a:0,e:"Perfect squares."},
+  {d:1,q:"Book : Author :: Painting : ?",o:["Painter","Canvas","Gallery","Brush"],a:0,e:"A book is created by an author; a painting by a painter."},
+  {d:2,q:"Find the next letter: A, C, F, J, O, ?",o:["U","T","V","S"],a:0,e:"Gaps +2, +3, +4, +5, +6 → O + 6 = U."},
+  {d:3,q:"In a certain code, MONKEY is written as XDJMNL. How is TIGER written in that code?",o:["QDFHS","SHFDQ","QDGHS","RDFHS"],a:0,e:"Reverse the word and shift each letter −1: TIGER → REGIT → QDFHS."},
+  {d:3,q:"Is x > y?\n\nStatement 1: x = 2y\nStatement 2: y > 0",o:["Statement 1 alone is sufficient","Statement 2 alone is sufficient","Both statements together are sufficient","Both statements together are not sufficient"],a:2,ns:1,e:"Alone, neither works (y could be negative). Together, x = 2y with y > 0 gives x > y."},
+  {d:3,q:"Five friends A, B, C, D and E sit in a row facing north. C is in the middle. A is at the extreme left. E is to the immediate right of C. B is not adjacent to E. Who is at the extreme right?",o:["D","B","E","A"],a:0,e:"A _ C E _ ; B can't be next to E → B second, D at the extreme right."},
+  {d:2,q:"A man is facing east. He turns 90° clockwise and then 180° anticlockwise. Which direction is he facing now?",o:["North","South","West","East"],a:0,e:"East → (90° cw) South → (180° acw) North."},
+  {d:1,q:"Find the odd one out: 8, 27, 64, 100, 125",o:["100","27","64","125"],a:0,e:"All others are perfect cubes."},
+  {d:2,q:"If 1 January 2023 was a Sunday, what day of the week was 1 January 2024?",o:["Monday","Sunday","Tuesday","Saturday"],a:0,e:"2023 is not a leap year → 1 odd day → Monday."},
+  {d:2,q:"Find the next number: 5, 11, 23, 47, ?",o:["95","94","96","92"],a:0,e:"Each term × 2 + 1."},
+  {d:2,q:"A is B's sister. C is B's mother. D is C's father. How is A related to D?",o:["Granddaughter","Daughter","Grandmother","Niece"],a:0,e:"A is C's daughter, and C is D's daughter → A is D's granddaughter."},
+  {d:1,q:"Find the next number: 2, 3, 5, 7, 11, 13, ?",o:["17","15","19","16"],a:0,e:"Prime numbers."},
+  {d:3,q:"If '+' means '×', '−' means '÷', '×' means '−' and '÷' means '+', then\n8 + 6 − 3 × 4 ÷ 2 = ?",o:["14","12","16","18"],a:0,e:"8 × 6 ÷ 3 − 4 + 2 = 16 − 4 + 2 = 14."},
+  {d:3,q:"Statements:\nSome pens are books.\nNo book is a chair.\n\nConclusions:\nI. Some pens are not chairs.\nII. No pen is a chair.",o:["Only I follows","Only II follows","Both follow","Neither follows"],a:0,ns:1,e:"The pens that are books can't be chairs → I follows. II is not certain."},
+  {d:1,q:"4 : 64 :: 5 : ?",o:["125","25","100","150"],a:0,e:"n : n³."},
+  {d:2,q:"Arrange in a meaningful order:\n1. Seed  2. Plant  3. Fruit  4. Flower",o:["1, 2, 4, 3","1, 4, 2, 3","2, 1, 4, 3","1, 2, 3, 4"],a:0,e:"Seed → Plant → Flower → Fruit."},
+  {d:2,q:"Statements:\nSome boys are tall.\nAll tall people are smart.\n\nConclusions:\nI. Some boys are smart.\nII. All smart people are tall.",o:["Only I follows","Only II follows","Both follow","Neither follows"],a:0,ns:1,e:"Some boys are tall → those boys are smart. II is an invalid converse."},
+  {d:3,q:"Find the next letter: Z, X, U, Q, ?",o:["L","M","K","N"],a:0,e:"Gaps −2, −3, −4, −5 → Q − 5 = L."},
+  {d:3,q:"In a row of 40 students, Amit is 14th from the left. Bina is 7 places to the right of Amit. What is Bina's position from the right end?",o:["20th","19th","21st","18th"],a:0,e:"Bina is 21st from left → 40 − 21 + 1 = 20th from right."},
+  {d:2,q:"If in a certain code language 'sky is blue' is written as 'ta na ko' and 'blue is good' as 'na ko pi', what is the code for 'sky'?",o:["ta","na","ko","pi"],a:0,e:"'is' and 'blue' are common → na/ko. The remaining word 'sky' = ta."},
+];
+
+/* ======================= AUTOMATA PROBLEMS ======================= */
+const PROBLEMS = [
+  {title:"Reverse the Words", fn:"reverseWords", params:["s"], ret:"string",
+   desc:`<p>Given a sentence <code>s</code>, return a new string with the order of the <b>words reversed</b>. Words are separated by one or more spaces. The returned string must have words separated by a <b>single space</b> with no leading or trailing spaces.</p>`,
+   cons:"1 ≤ length of s ≤ 10⁴. s contains at least one word.",
+   tests:[{a:["hello world"],x:"world hello",v:1},{a:["  the sky  is blue "],x:"blue is sky the",v:1},{a:["a"],x:"a"},{a:["AMCAT practice test now"],x:"now test practice AMCAT"},{a:["one   two"],x:"two one"}]},
+  {title:"Second Largest Element", fn:"secondLargest", params:["arr"], ret:"integer",
+   desc:`<p>Given an array of integers <code>arr</code>, return the <b>second largest distinct</b> element. If no such element exists, return <code>-1</code>.</p>`,
+   cons:"1 ≤ length of arr ≤ 10⁵, −10⁹ ≤ arr[i] ≤ 10⁹ (note: -1 is returned only when no second distinct value exists).",
+   tests:[{a:[[12,35,1,10,34,1]],x:34,v:1},{a:[[10,10,10]],x:-1,v:1},{a:[[5]],x:-1},{a:[[-1,-5,-3]],x:-3},{a:[[3,3,2,1]],x:2},{a:[[1,2]],x:1}]},
+  {title:"Count Pairs With Given Sum", fn:"countPairs", params:["arr","k"], ret:"integer",
+   desc:`<p>Given an array of integers <code>arr</code> and an integer <code>k</code>, return the number of pairs of indices <code>(i, j)</code> with <code>i &lt; j</code> such that <code>arr[i] + arr[j] == k</code>.</p><p>Aim for better than O(n²).</p>`,
+   cons:"1 ≤ length of arr ≤ 10⁵",
+   tests:[{a:[[1,5,7,-1],6],x:2,v:1},{a:[[1,1,1,1],2],x:6,v:1},{a:[[1,2,3],10],x:0},{a:[[10,12,10,15,-1,7,6,5,4,2,1,1,1],11],x:9},{a:[[0],0],x:0}]},
+  {title:"Balanced Brackets", fn:"isBalanced", params:["s"], ret:"boolean",
+   desc:`<p>Given a string <code>s</code> containing only the characters <code>( ) { } [ ]</code>, return <code>true</code> if the brackets are balanced, otherwise <code>false</code>.</p><p>Brackets are balanced if every opening bracket is closed by the same type of bracket and in the correct order. An empty string is balanced.</p><p>(Python: return <code>True</code>/<code>False</code>.)</p>`,
+   cons:"0 ≤ length of s ≤ 10⁴",
+   tests:[{a:["{[()]}"],x:true,v:1},{a:["([)]"],x:false,v:1},{a:[""],x:true},{a:["((("],x:false},{a:["()[]{}"],x:true},{a:["}{"],x:false}]},
+  {title:"Longest Substring Without Repeats", fn:"longestUnique", params:["s"], ret:"integer",
+   desc:`<p>Given a string <code>s</code>, return the <b>length</b> of the longest substring that contains no repeating characters.</p>`,
+   cons:"0 ≤ length of s ≤ 10⁵",
+   tests:[{a:["abcabcbb"],x:3,v:1},{a:["bbbbb"],x:1,v:1},{a:["pwwkew"],x:3},{a:[""],x:0},{a:["dvdf"],x:3},{a:["abba"],x:2}]},
+  {title:"Matrix Diagonal Difference", fn:"diagonalDifference", params:["mat"], ret:"integer",
+   desc:`<p>Given a square matrix <code>mat</code> of size N × N, return the <b>absolute difference</b> between the sum of its primary diagonal and the sum of its secondary diagonal.</p>`,
+   cons:"1 ≤ N ≤ 100",
+   tests:[{a:[[[11,2,4],[4,5,6],[10,8,-12]]],x:15,v:1},{a:[[[1,2],[3,4]]],x:0,v:1},{a:[[[5]]],x:0},{a:[[[1,0,0],[0,1,0],[0,0,0]]],x:1}]},
+];
+
+const SECTIONS = [
+  {id:"eng",  name:"English Comprehension", type:"mcq",  bank:ENG,      count:18, time:16*60, note:"Synonyms, antonyms, grammar, error spotting and reading comprehension."},
+  {id:"quant",name:"Quantitative Ability",  type:"mcq",  bank:QUANT,    count:16, time:18*60, note:"Calculators are not allowed. Use pen and paper for rough work."},
+  {id:"logic",name:"Logical Ability",       type:"mcq",  bank:LOGIC,    count:14, time:16*60, note:"Deductive and inductive reasoning, coding-decoding, directions and data sufficiency."},
+  {id:"auto", name:"Automata (Coding)",     type:"code", bank:PROBLEMS, count:2,  time:45*60, note:"Solve 2 coding problems in C++, Python 3 or JavaScript. Partial marks are given for each test case passed."},
+];
+
+/* ======================= HELPERS ======================= */
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const fmt = s => { s = Math.max(0, Math.ceil(s)); return String(Math.floor(s/60)).padStart(2,"0")+":"+String(s%60).padStart(2,"0"); };
+const shuffle = a => { a = a.slice(); for (let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a; };
+const scale = f => Math.min(900, Math.max(100, Math.round((100 + 800*f)/5)*5));
+const SCREENS = ["scrLogin","scrInstr","scrSecIntro","scrMcq","scrAuto","scrSecDone","scrResults"];
+function show(id){ SCREENS.forEach(s => $("#"+s).classList.toggle("hidden", s!==id)); window.scrollTo(0,0); }
+
+let LOGO_IMG = null;
+const LOGO_SVG = `<svg width="168" height="42" viewBox="0 0 168 42" aria-label="AMCAT"><circle cx="20" cy="21" r="17" fill="#f39200"/><path d="M11.5 29 L20 12 L28.5 29 M15 23 h10" stroke="#fff" stroke-width="3.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/><text x="44" y="29" font-family="'Arial Black',Arial,sans-serif" font-weight="900" font-size="25" fill="#14325c" letter-spacing="-0.5">amcat</text><text x="129" y="17" font-family="Arial" font-size="8" fill="#f39200" font-weight="700">MOCK</text></svg>`;
+function renderLogos(){ document.querySelectorAll(".logo").forEach(el => el.innerHTML = LOGO_IMG ? `<img src="${LOGO_IMG}" alt="logo">` : LOGO_SVG); }
+// Drop an official logo file named "logo.png" next to this HTML file to use it instead of the built-in one.
+(() => { const i = new Image(); i.onload = () => { LOGO_IMG = "logo.png"; renderLogos(); }; i.src = "logo.png"; })();
+renderLogos();
+
+function modal(title, html, buttons){
+  return new Promise(res => {
+    const root = $("#modalRoot");
+    root.innerHTML = `<div class="overlay"><div class="modal"><h3>${title}</h3><div style="line-height:1.55">${html}</div><div class="acts">${buttons.map((b,i)=>`<button class="btn ${b.cls||""}" data-i="${i}">${b.label}</button>`).join("")}</div></div></div>`;
+    root.querySelectorAll("button").forEach(b => b.onclick = () => { root.innerHTML = ""; res(buttons[+b.dataset.i].value); });
+  });
+}
+
+/* ======================= STATE ======================= */
+const S = { name:"", tid:"", plan:[], idx:0, st:null, results:[], tabSwitches:0, testStart:0, active:false };
+
+/* ======================= LOGIN / INSTRUCTIONS ======================= */
+$("#inId").value = "AM-" + Math.floor(100000 + Math.random()*900000);
+$("#secChecks").innerHTML = SECTIONS.map(s => `<label><input type="checkbox" value="${s.id}" checked> ${s.name}<span class="m">${s.count} ${s.type==="code"?"problems":"Qs"} · ${s.time/60} min</span></label>`).join("");
+$("#loginBtn").onclick = () => {
+  const name = $("#inName").value.trim();
+  if (!name) { $("#inName").focus(); $("#inName").style.borderColor = "var(--red)"; return; }
+  const ids = [...document.querySelectorAll("#secChecks input:checked")].map(i => i.value);
+  if (!ids.length) { modal("Select a module", "Please select at least one module.", [{label:"OK"}]); return; }
+  S.name = name; S.tid = $("#inId").value;
+  S.plan = SECTIONS.filter(s => ids.includes(s.id));
+  S.mode = document.querySelector("input[name=mode]:checked").value;
+  if (S.mode === "palette") {
+    $("#insA").innerHTML = "Each module has a fixed mix of <b>easy, medium and hard</b> questions.";
+    $("#insB").innerHTML = "Use the <b>question palette</b> on the right to jump to any question. <b>Save &amp; Next</b> saves your answer; <b>Mark for Review &amp; Next</b> flags the question to revisit (an answered question marked for review is <b>still evaluated</b>); <b>Clear Response</b> removes your answer.";
+  }
+  $("#hdrCand").innerHTML = `<b>${esc(name)}</b><br>${S.tid}`;
+  $("#instrTable").innerHTML = `<tr><th>#</th><th>Module</th><th>Questions</th><th>Time</th></tr>` +
+    S.plan.map((s,i) => `<tr><td>${i+1}</td><td>${s.name}</td><td>${s.count}</td><td>${s.time/60} min</td></tr>`).join("") +
+    `<tr><th></th><th>Total</th><th>${S.plan.reduce((a,s)=>a+s.count,0)}</th><th>${S.plan.reduce((a,s)=>a+s.time,0)/60} min</th></tr>`;
+  $("#hdrTitle").textContent = "Instructions";
+  show("scrInstr");
+};
+$("#inName").addEventListener("keydown", e => { if (e.key === "Enter") $("#loginBtn").click(); });
+$("#agree").onchange = e => $("#startTestBtn").disabled = !e.target.checked;
+$("#startTestBtn").onclick = () => {
+  goFull();
+  S.active = true; updFs(); S.testStart = Date.now(); S.idx = 0;
+  sectionIntro();
+};
+
+/* ======================= SECTION FLOW ======================= */
+function sectionIntro(){
+  const cfg = S.plan[S.idx];
+  $("#hdrTitle").textContent = cfg.name;
+  $("#timer").classList.add("hidden"); $("#subbar").classList.add("hidden");
+  $("#siStep").textContent = `Module ${S.idx+1} of ${S.plan.length}`;
+  $("#siName").textContent = cfg.name;
+  $("#siCount").textContent = cfg.count + (cfg.type==="code" ? " coding problems" : " questions");
+  $("#siTime").textContent = cfg.time/60 + " minutes";
+  $("#siNote").textContent = cfg.note;
+  if (cfg.type === "code") Runner.get("python"); // pre-load Python runtime in the background
+  show("scrSecIntro");
+}
+$("#siStart").onclick = () => {
+  const cfg = S.plan[S.idx];
+  const st = S.st = { cfg, startAt: Date.now(), endAt: Date.now() + cfg.time*1000, done:false };
+  $("#timer").classList.remove("hidden");
+  st.timer = setInterval(tick, 250); tick();
+  if (cfg.type === "mcq") {
+    $("#subbar").classList.remove("hidden");
+    $("#dots").classList.toggle("hidden", S.mode === "palette");
+    if (S.mode === "palette") startPalette();
+    else { Object.assign(st, {asked:[], used:new Set(), diff:2}); nextQuestion(); }
+    show("scrMcq");
+  }
+  else startAutomata();
+};
+function tick(){
+  const st = S.st; if (!st) return;
+  const left = (st.endAt - Date.now())/1000;
+  $("#timerVal").textContent = fmt(left);
+  $("#timer").classList.toggle("warn", left <= 120);
+  $("#timer").classList.toggle("blink", left <= 60);
+  if (left <= 0) finishSection(true);
+}
+
+function finishSection(timedOut){
+  const st = S.st; if (!st || st.done) return;
+  st.done = true; clearInterval(st.timer);
+  const timeUsed = Math.min(st.cfg.time, (Date.now() - st.startAt)/1000);
+  let res;
+  if (st.cfg.type === "mcq" && st.items) {
+    saveSel(); leaveCur();
+    const asked = st.items.map(it => ({ q:it.q, chosen:it.chosen, ok:it.chosen === it.q.a, time:it.time, marked:it.marked }));
+    const correct = asked.filter(a => a.ok).length;
+    const earned = asked.reduce((s,a) => s + (a.ok ? a.q.d : 0), 0);
+    const max = asked.reduce((s,a) => s + a.q.d, 0);
+    res = { cfg:st.cfg, asked, correct, score:scale(earned/max), timeUsed };
+  } else if (st.cfg.type === "mcq") {
+    const correct = st.asked.filter(a => a.ok).length;
+    const earned = st.asked.reduce((s,a) => s + (a.ok ? a.q.d : 0), 0);
+    // best possible total: the hardest questions the bank can actually supply
+    const max = st.cfg.bank.map(q => q.d).sort((a,b) => b-a).slice(0, st.cfg.count).reduce((a,b) => a+b, 0);
+    res = { cfg:st.cfg, asked:st.asked, correct, score:scale(earned/max), timeUsed };
+  } else {
+    saveCode();
+    const frac = st.probs.reduce((s,p) => s + p.best, 0) / st.probs.length;
+    res = { cfg:st.cfg, probs:st.probs, score:scale(frac), frac, timeUsed };
+  }
+  S.results.push(res); S.st = null;
+  document.querySelector(".modal") && ($("#modalRoot").innerHTML = "");
+  $("#timer").classList.add("hidden"); $("#subbar").classList.add("hidden");
+  const last = S.idx === S.plan.length - 1;
+  $("#sdTitle").textContent = timedOut ? "Time's up!" : "Module submitted";
+  $("#sdMsg").textContent = (timedOut ? `The time for ${st.cfg.name} is over and your responses were submitted automatically.` : `Your responses for ${st.cfg.name} have been recorded.`) + (last ? "" : ` Next module: ${S.plan[S.idx+1].name}.`);
+  $("#sdNext").textContent = last ? "Finish Test & View Report" : "Proceed to Next Module";
+  show("scrSecDone");
+}
+$("#sdNext").onclick = () => {
+  if (S.idx < S.plan.length - 1) { S.idx++; sectionIntro(); }
+  else { S.active = false; updFs(); if (isFull()) document.exitFullscreen().catch(()=>{}); renderResults(); }
+};
+
+/* ======================= SECTION TABS ======================= */
+function secTabsHTML(){
+  return `<div class="sectabs">${S.plan.map((s,i) => {
+    const k = i < S.idx ? "done" : i === S.idx ? "on" : "lock";
+    return `<div class="stab ${k}"><b>${esc(s.name)}</b></div>`;
+  }).join("")}</div>`;
+}
+function qHeadHTML(num, total, flag){
+  return `<div class="qhead"><span><b>Question ${num}</b> <span class="tot">/ ${total}</span></span><span class="secbadge">${esc(S.st.cfg.name)}</span><span style="flex:1"></span>
+    <span class="marks" title="No negative marking"><span class="p">+1</span><span class="m">−0</span></span>${flag || ""}</div>`;
+}
+
+/* ======================= MCQ ======================= */
+function pickQuestion(){
+  const st = S.st, bank = st.cfg.bank;
+  for (const delta of [0, -1, 1, -2, 2]) {
+    const d = st.diff + delta;
+    const pool = bank.map((q,i) => i).filter(i => !st.used.has(i) && bank[i].d === d);
+    if (pool.length) return pool[Math.floor(Math.random()*pool.length)];
+  }
+  return -1;
+}
+function nextQuestion(){
+  const st = S.st;
+  if (st.asked.length >= st.cfg.count) return finishSection(false);
+  const i = pickQuestion();
+  if (i < 0) return finishSection(false);
+  st.used.add(i);
+  const q = st.cfg.bank[i];
+  st.cur = { ...q, order: q.ns ? q.o.map((_,k)=>k) : shuffle(q.o.map((_,k)=>k)) };
+  st.qStart = Date.now();
+  renderMCQ();
+}
+function renderMCQ(){
+  const st = S.st, q = st.cur, n = st.asked.length;
+  $("#qnum").textContent = `Question ${n+1} of ${st.cfg.count}`;
+  $("#dots").innerHTML = Array.from({length:st.cfg.count}, (_,i) => `<span class="dot ${i<n?"done":i===n?"cur":""}"></span>`).join("");
+  const passage = q.p ? PASSAGES[q.p] : null;
+  const qhtml = `<div class="card qcard">
+      ${qHeadHTML(n+1, st.cfg.count)}
+      <div class="qtext">${esc(q.q)}</div>
+      <div class="opts">${q.order.map((oi,k) => `<label class="opt"><input type="radio" name="opt" value="${oi}"><span class="ol">${"ABCD"[k]}</span><span>${esc(q.o[oi])}</span></label>`).join("")}</div>
+      <div class="qfoot"><span class="diffhint">Select an option to continue. You cannot return to this question.</span><button class="btn orange" id="subAns" disabled>Submit Answer</button></div>
+    </div>`;
+  $("#mcqBody").innerHTML = secTabsHTML() + (passage
+    ? `<div class="split"><div class="card passage"><div class="plabel">Read the passage carefully</div>${passage.map(p=>`<p>${esc(p)}</p>`).join("")}</div>${qhtml}</div>`
+    : qhtml);
+  document.querySelectorAll("input[name=opt]").forEach(r => r.onchange = () => {
+    document.querySelectorAll(".opt").forEach(o => o.classList.toggle("sel", o.querySelector("input").checked));
+    $("#subAns").disabled = false;
+  });
+  $("#subAns").onclick = submitMCQ;
+}
+function submitMCQ(){
+  const sel = document.querySelector("input[name=opt]:checked"), st = S.st;
+  if (!sel || !st) return;
+  const q = st.cur, chosen = +sel.value, ok = chosen === q.a;
+  st.asked.push({ q, chosen, ok, time:(Date.now() - st.qStart)/1000 });
+  st.diff = ok ? Math.min(3, st.diff+1) : Math.max(1, st.diff-1);
+  nextQuestion();
+}
+
+/* ======================= MCQ: PALETTE MODE ======================= */
+const STATUS = { nv:"Not Visited", na:"Not Answered", an:"Answered", mr:"Marked for Review", am:"Answered & Marked for Review" };
+function startPalette(){
+  const st = S.st, bank = st.cfg.bank;
+  const groups = {};
+  shuffle(bank.map((_,i) => i)).slice(0, st.cfg.count).forEach(i => { const k = bank[i].p || "_" + i; (groups[k] = groups[k] || []).push(i); });
+  st.items = Object.values(groups).flat().map(i => {
+    const q = bank[i];
+    return { q:{ ...q, order: q.ns ? q.o.map((_,k)=>k) : shuffle(q.o.map((_,k)=>k)) }, chosen:null, marked:false, visited:false, time:0 };
+  });
+  st.pos = 0; st.qStart = null;
+  goTo(0);
+}
+const statusOf = it => !it.visited ? "nv" : it.marked ? (it.chosen !== null ? "am" : "mr") : it.chosen !== null ? "an" : "na";
+function saveSel(){ const st = S.st; if (!st || !st.items) return; const sel = document.querySelector("#mcqBody input[name=opt]:checked"); if (sel) st.items[st.pos].chosen = +sel.value; }
+function leaveCur(){ const st = S.st; if (st.qStart != null) st.items[st.pos].time += (Date.now() - st.qStart)/1000; st.qStart = null; }
+function goTo(i){
+  const st = S.st; if (!st) return;
+  leaveCur();
+  st.pos = Math.max(0, Math.min(st.items.length-1, i));
+  st.items[st.pos].visited = true;
+  st.qStart = Date.now();
+  renderPalette();
+}
+function renderPalette(){
+  const st = S.st, it = st.items[st.pos], q = it.q, n = st.items.length;
+  $("#qnum").textContent = `Question ${st.pos+1} of ${n}`;
+  const cnt = { nv:0, na:0, an:0, mr:0, am:0 };
+  st.items.forEach(x => cnt[statusOf(x)]++);
+  const passage = q.p ? PASSAGES[q.p] : null;
+  const qhtml = `<div class="card qcard">
+      ${qHeadHTML(st.pos+1, n, `<button class="flag ${it.marked?"on":""}" id="pFlag" title="${it.marked?"Marked for review — click to unmark":"Mark for review"}">⚑</button>`)}
+      <div class="qtext">${esc(q.q)}</div>
+      <div class="opts">${q.order.map((oi,k) => `<label class="opt ${it.chosen===oi?"sel":""}"><input type="radio" name="opt" value="${oi}" ${it.chosen===oi?"checked":""}><span class="ol">${"ABCD"[k]}</span><span>${esc(q.o[oi])}</span></label>`).join("")}</div>
+      <div class="qfoot pal-f">
+        <div class="grp"><button class="btn purple sm" id="pMark">Mark for Review &amp; Next</button><button class="btn outline sm" id="pClear">Clear Response</button></div>
+        <div class="grp"><button class="btn outline sm" id="pPrev" ${st.pos===0?"disabled":""}>◀ Previous</button><button class="btn orange sm" id="pSave">${st.pos===n-1?"Save":"Save &amp; Next"}</button></div>
+      </div>
+    </div>`;
+  const LBL = { an:"Answered", na:"Not Answered", nv:"Not Visited", mr:"Marked", am:"Answered &amp; Marked (evaluated)" };
+  const leg = k => `<div class="${k==="am"?"wide":""}"><span class="pb mini ${k}">${cnt[k]}</span>${LBL[k]}</div>`;
+  const side = `<aside class="side">
+      <div class="side-user"><div class="avatar">${esc((S.name.trim()[0] || "?").toUpperCase())}</div><b>${esc(S.name)}</b></div>
+      <div class="legend">${["an","na","nv","mr","am"].map(leg).join("")}</div>
+      <div class="side-h">${esc(st.cfg.name)}</div>
+      <div class="side-c">Choose a Question</div>
+      <div class="pal">${st.items.map((x,i) => `<button class="pb ${statusOf(x)} ${i===st.pos?"cur":""}" data-i="${i}" title="${STATUS[statusOf(x)]}">${i+1}</button>`).join("")}</div>
+      <div class="side-f"><button class="btn" id="pSubmit">Submit Section</button></div>
+    </aside>`;
+  const main = passage
+    ? `<div class="split"><div class="card passage"><div class="plabel">Read the passage carefully</div>${passage.map(p=>`<p>${esc(p)}</p>`).join("")}</div>${qhtml}</div>`
+    : qhtml;
+  $("#mcqBody").innerHTML = `<div class="mcqgrid"><div>${secTabsHTML()}${main}</div>${side}</div>`;
+  $("#pFlag").onclick = () => { saveSel(); it.marked = !it.marked; renderPalette(); };
+  document.querySelectorAll("#mcqBody input[name=opt]").forEach(r => r.onchange = () =>
+    document.querySelectorAll(".opt").forEach(o => o.classList.toggle("sel", o.querySelector("input").checked)));
+  const next = () => st.pos < n-1 ? goTo(st.pos+1) : renderPalette();
+  $("#pSave").onclick = () => { saveSel(); it.marked = false; next(); };
+  $("#pMark").onclick = () => { saveSel(); it.marked = true; next(); };
+  $("#pClear").onclick = () => { it.chosen = null; renderPalette(); };
+  $("#pPrev").onclick = () => { saveSel(); goTo(st.pos-1); };
+  document.querySelectorAll("#mcqBody .pal .pb").forEach(b => b.onclick = () => { saveSel(); goTo(+b.dataset.i); });
+  $("#pSubmit").onclick = confirmPaletteSubmit;
+}
+async function confirmPaletteSubmit(){
+  const st = S.st; saveSel(); renderPalette();
+  const cnt = { nv:0, na:0, an:0, mr:0, am:0 };
+  st.items.forEach(x => cnt[statusOf(x)]++);
+  const rows = ["an","am","mr","na","nv"].map(k => `<tr><td>${STATUS[k]}</td><td><b>${cnt[k]}</b></td></tr>`).join("");
+  const ok = await modal("Submit section: " + esc(st.cfg.name) + "?", `<table class="t">${rows}</table>Questions not answered will score zero. You cannot return to this module after submitting.`,
+    [{label:"Go Back", cls:"light", value:false}, {label:"Submit Section", cls:"red", value:true}]);
+  if (ok && S.st === st) finishSection(false);
+}
+
+/* ======================= CODE RUNNER (Web Workers) ======================= */
+const PY_RUNNER = [
+"import json, io, contextlib, traceback",
+"def __run():",
+"    ns = {}",
+"    try:",
+"        exec(__user_code, ns)",
+"    except Exception as ex:",
+"        return {'error': 'Compilation error:\\n' + ''.join(traceback.format_exception_only(type(ex), ex))}",
+"    f = ns.get(__fn)",
+"    if not callable(f):",
+"        return {'error': \"Function '\" + __fn + \"' not found. Do not rename the given function.\"}",
+"    res = []",
+"    for args in json.loads(__tests_json):",
+"        buf = io.StringIO()",
+"        try:",
+"            with contextlib.redirect_stdout(buf):",
+"                r = f(*args)",
+"            res.append({'ok': True, 'out': json.dumps(r), 'stdout': buf.getvalue()[:2000]})",
+"        except Exception as ex:",
+"            res.append({'ok': False, 'err': type(ex).__name__ + ': ' + str(ex), 'stdout': buf.getvalue()[:2000]})",
+"    return {'results': res}",
+"json.dumps(__run())"].join("\n");
+
+const PY_WORKER_SRC = `
+importScripts("https://cdn.jsdelivr.net/pyodide/v0.26.4/full/pyodide.js");
+const ready = loadPyodide().then(p => { postMessage({type:"ready"}); return p; }, e => { postMessage({type:"loadError", error:String(e)}); throw e; });
+const RUNNER = ${JSON.stringify(PY_RUNNER)};
+onmessage = async (e) => {
+  const {code, fn, tests} = e.data;
+  try {
+    const py = await ready;
+    py.globals.set("__user_code", code);
+    py.globals.set("__fn", fn);
+    py.globals.set("__tests_json", JSON.stringify(tests));
+    const out = await py.runPythonAsync(RUNNER);
+    postMessage(Object.assign({type:"result"}, JSON.parse(out)));
+  } catch (err) { postMessage({type:"result", error:String(err && err.message || err)}); }
+};`;
+
+const JS_WORKER_SRC = `
+onmessage = (e) => {
+  const {code, fn, tests} = e.data;
+  let f;
+  try { f = new Function(code + "\\n;return (typeof " + fn + " === 'function') ? " + fn + " : undefined;")(); }
+  catch (err) { postMessage({type:"result", error:"Compilation error:\\n" + err.name + ": " + err.message}); return; }
+  if (!f) { postMessage({type:"result", error:"Function '" + fn + "' not found. Do not rename the given function."}); return; }
+  const results = tests.map(args => {
+    const logs = [];
+    console.log = (...a) => logs.push(a.map(x => typeof x === "object" ? JSON.stringify(x) : String(x)).join(" "));
+    try { const r = f(...args); return {ok:true, out:JSON.stringify(r === undefined ? null : r), stdout:logs.join("\\n").slice(0,2000)}; }
+    catch (err) { return {ok:false, err:String(err), stdout:logs.join("\\n").slice(0,2000)}; }
+  });
+  postMessage({type:"result", results});
+};`;
+
+const Runner = {
+  w: {},
+  make(lang){
+    const src = lang === "python" ? PY_WORKER_SRC : JS_WORKER_SRC;
+    let worker;
+    try { worker = new Worker(URL.createObjectURL(new Blob([src], {type:"text/javascript"}))); }
+    catch (e) { return { ready: Promise.reject(e) }; }
+    const entry = { worker, loaded:false };
+    entry.ready = lang !== "python" ? Promise.resolve() : new Promise((res, rej) => {
+      worker.addEventListener("message", function h(e){
+        if (e.data.type === "ready") { entry.loaded = true; worker.removeEventListener("message", h); res(); }
+        else if (e.data.type === "loadError") { worker.removeEventListener("message", h); rej(new Error(e.data.error)); }
+      });
+      worker.addEventListener("error", ev => rej(new Error(ev.message || "worker failed to start")));
+    });
+    entry.ready.catch(() => {});
+    if (lang !== "python") entry.loaded = true;
+    return this.w[lang] = entry;
+  },
+  get(lang){ return this.w[lang] || this.make(lang); },
+  async run(lang, code, fn, tests, status){
+    const entry = this.get(lang);
+    if (!entry.loaded) status("Loading Python runtime (first run only — needs internet)…");
+    try { await entry.ready; }
+    catch (e) { delete this.w[lang]; return { error: "Could not load the Python runtime (" + e.message + ").\nCheck your internet connection, or switch the language to JavaScript." }; }
+    status("Running…");
+    return new Promise(resolve => {
+      const t = setTimeout(() => { entry.worker.terminate(); delete this.w[lang]; resolve({ error: "Time Limit Exceeded: execution took longer than 5 seconds (infinite loop or inefficient solution)." }); }, 5000);
+      entry.worker.onmessage = e => { if (e.data.type !== "result") return; clearTimeout(t); resolve(e.data); };
+      entry.worker.postMessage({ code, fn, tests });
+    });
+  }
+};
+
+/* ======================= AUTOMATA ======================= */
+/* C++ support: types of each problem's parameters and return value */
+const CPP_TYPES = {
+  reverseWords:[["str"],"str"], secondLargest:[["vi"],"int"], countPairs:[["vi","int"],"int"],
+  isBalanced:[["str"],"bool"], longestUnique:[["str"],"int"], diagonalDifference:[["vvi"],"int"],
+};
+const CPP_NAME = { str:"string", int:"int", bool:"bool", vi:"vector<int>", vvi:"vector<vector<int>>" };
+const CPP_DEFAULT = { str:'""', int:"0", bool:"false" };
+const cppLit = (t, v) => t === "str" ? JSON.stringify(v) : t === "int" ? String(v) : t === "bool" ? (v ? "true" : "false")
+  : t === "vi" ? `vector<int>{${v.join(",")}}` : `vector<vector<int>>{${v.map(r => `{${r.join(",")}}`).join(",")}}`;
+
+function cppProgram(p, code, tests){
+  const [pt] = CPP_TYPES[p.fn];
+  const calls = tests.map((args, i) =>
+    `    cout << "\\n@@T${i}@@" << flush; { auto __r = ${p.fn}(${args.map((a,k) => cppLit(pt[k], a)).join(", ")}); cout << "\\n@@R${i}@@"; __pj(__r); cout << "\\n" << flush; }`).join("\n");
+  return `${code}
+#include <bits/stdc++.h>
+using namespace std;
+template<class T> static void __pj(const T& v){ cout << v; }
+static void __pj(const string& s){ cout << '"'; for (char c : s) { if (c == '"' || c == '\\\\') cout << '\\\\' << c; else if (c == '\\n') cout << "\\\\n"; else cout << c; } cout << '"'; }
+static void __pj(const bool& b){ cout << (b ? "true" : "false"); }
+int main(){
+${calls}
+    return 0;
+}
+`;
+}
+
+async function compileOnline(src){
+  const timed = (url, body) => { const ac = new AbortController(); const t = setTimeout(() => ac.abort(), 30000);
+    return fetch(url, { method:"POST", headers:{"Content-Type":"application/json","Accept":"application/json"}, body:JSON.stringify(body), signal:ac.signal }).finally(() => clearTimeout(t)); };
+  const clean = t => (t || "").replace(/\x1b\[[0-9;]*[A-Za-z]/g, "");
+  try {   // primary: Compiler Explorer (fastest, ~5 s)
+    const r = await timed("https://godbolt.org/api/compiler/g132/compile", { source:src, options:{ userArguments:"-O2 -std=c++17", executeParameters:{args:[], stdin:""}, compilerOptions:{executorRequest:true}, filters:{execute:true} } });
+    if (!r.ok) throw new Error("HTTP " + r.status);
+    const j = await r.json(), txt = a => clean((a || []).map(x => x.text).join("\n"));
+    if (j.buildResult && j.buildResult.code !== 0) return { compileError: txt(j.buildResult.stderr) || "Compilation failed" };
+    if (j.didExecute === false) throw new Error("not executed");
+    return { stdout: txt(j.stdout), stderr: txt(j.stderr), exit: String(j.code) };
+  } catch (e1) {   // fallback: Wandbox (slower)
+    try {
+      const r = await timed("https://wandbox.org/api/compile.json", { code:src, compiler:"gcc-head", options:"c++17", "compiler-option-raw":"-O2" });
+      if (!r.ok) throw new Error("HTTP " + r.status);
+      const j = await r.json();
+      const ce = /\berror\b/.test(j.compiler_error || "") && !j.program_output;
+      return { compileError: ce ? clean(j.compiler_error) : null, stdout: j.program_output || "", stderr: j.program_error || "", exit: j.status, signal: j.signal };
+    } catch (e2) { return { netError: e1.message + " / " + e2.message }; }
+  }
+}
+
+async function runCpp(p, code, tests, status){
+  status("Compiling C++ online (takes ~5 s)…");
+  const r = await compileOnline(cppProgram(p, code, tests));
+  if (r.netError) return { error: "Could not reach the online C++ compiler (" + r.netError + ").\nC++ needs an internet connection. Check it, or switch to Python / JavaScript." };
+  if (r.compileError) return { error: "Compilation error:\n" + r.compileError.replace(/prog\.cc:|<source>:|example\.cpp:/g, "line ") };
+  const out = r.stdout;
+  const results = tests.map((_, i) => {
+    const a = out.indexOf(`@@T${i}@@`), b = out.indexOf(`\n@@R${i}@@`);
+    const start = a < 0 ? -1 : a + `@@T${i}@@`.length;
+    if (a < 0 || b < 0) return { ok:false, err: "Runtime Error" + (r.signal ? " (" + r.signal + ")" : r.exit && r.exit !== "0" ? " (exit code " + r.exit + ")" : "") + (r.stderr ? ": " + r.stderr.slice(0, 300) : ""), stdout: a < 0 ? "" : out.slice(start).slice(0, 2000) };
+    const end = out.indexOf("\n", b + 1 + `@@R${i}@@`.length);
+    return { ok:true, out: out.slice(b + 1 + `@@R${i}@@`.length, end < 0 ? undefined : end), stdout: out.slice(start, b).replace(/^\n/, "").slice(0, 2000) };
+  });
+  return { results };
+}
+
+function starter(p, lang){
+  if (lang === "cpp") {
+    const [pt, rt] = CPP_TYPES[p.fn];
+    return `#include <bits/stdc++.h>\nusing namespace std;\n\n${CPP_NAME[rt]} ${p.fn}(${pt.map((t,k) => CPP_NAME[t] + " " + p.params[k]).join(", ")}) {\n    // Write your code here\n    \n    return ${CPP_DEFAULT[rt]};\n}\n`;
+  }
+  return lang === "python"
+    ? `def ${p.fn}(${p.params.join(", ")}):\n    # Write your code here\n    pass\n`
+    : `function ${p.fn}(${p.params.join(", ")}) {\n    // Write your code here\n    \n}\n`;
+}
+function startAutomata(){
+  const st = S.st;
+  st.probs = shuffle(PROBLEMS).slice(0, st.cfg.count).map(p => ({ p, lang:"cpp", code:{cpp:starter(p,"cpp"), python:starter(p,"python"), javascript:starter(p,"javascript")}, best:0, bestPassed:0, submits:0 }));
+  st.cur = 0;
+  renderAuto(); show("scrAuto");
+}
+function renderAuto(){
+  const st = S.st, P = st.probs[st.cur], p = P.p;
+  $("#autoTabs").innerHTML = secTabsHTML();
+  $("#ptabs").innerHTML = st.probs.map((x,i) => `<button class="ptab ${i===st.cur?"on":""}" data-i="${i}">Problem ${i+1}<span class="st">${x.submits ? Math.round(x.best*100)+"%" : ""}</span></button>`).join("");
+  $("#ptabs").querySelectorAll("button").forEach(b => b.onclick = () => { saveCode(); st.cur = +b.dataset.i; renderAuto(); });
+  const vis = p.tests.filter(t => t.v);
+  $("#pstmt").innerHTML = `<h2>${esc(p.title)}</h2>${p.desc}
+    <h3 style="margin-top:18px">Function signature</h3><pre>${esc(p.fn)}(${esc(p.params.join(", "))}) → ${esc(p.ret)}</pre>
+    <p class="muted" style="font-size:13px">Complete the function. Do not read input or print the answer — just <b>return</b> the result.</p>
+    <h3>Examples</h3>${vis.map((t,i) => `<pre><b>Example ${i+1}</b>\nInput:  ${fmtArgs(p, t.a)}\nOutput: ${esc(JSON.stringify(t.x))}</pre>`).join("")}
+    <h3>Constraints</h3><p>${esc(p.cons)}</p>
+    <p class="muted" style="font-size:13px">Test cases: ${p.tests.length} (${vis.length} sample + ${p.tests.length - vis.length} hidden)</p>`;
+  $("#langSel").value = P.lang;
+  setCode(P.code[P.lang]);
+  $("#codeOut").innerHTML = P.out || `<span class="muted">Click "Compile &amp; Run" to test your code against the sample test cases.</span>`;
+  $("#codeStatus").textContent = "";
+}
+const fmtArgs = (p, args) => esc(p.params.map((n,i) => `${n} = ${JSON.stringify(args[i])}`).join(", "));
+function saveCode(){ const st = S.st; if (!st || !st.probs) return; const P = st.probs[st.cur]; P.code[P.lang] = $("#code").value; }
+$("#langSel").onchange = e => { saveCode(); const P = S.st.probs[S.st.cur]; P.lang = e.target.value; setCode(P.code[P.lang]); updLangNote(); };
+function updLangNote(){ const l = $("#langSel").value; $("#langNote").textContent = l === "cpp" ? "(compiled online, needs internet)" : l === "python" ? (Runner.w.python?.loaded ? "" : "(runtime loads on first run)") : ""; }
+$("#resetCode").onclick = async () => {
+  if (await modal("Reset code?", "This will replace your current code with the starter template.", [{label:"Cancel",cls:"light",value:false},{label:"Reset",cls:"red",value:true}])) {
+    const P = S.st.probs[S.st.cur]; P.code[P.lang] = starter(P.p, P.lang); setCode(P.code[P.lang]);
+  }
+};
+$("#finishAuto").onclick = async () => {
+  saveCode();
+  const pending = S.st.probs.filter(p => !p.submits).length;
+  const ok = await modal("Finish Automata module?", (pending ? `<b>${pending} problem(s) have not been submitted</b> and will score zero. ` : "") + "You cannot return to this module after finishing.", [{label:"Go Back",cls:"light",value:false},{label:"Finish Module",cls:"red",value:true}]);
+  if (ok && S.st) finishSection(false);
+};
+
+async function execute(all){
+  const st = S.st; if (!st) return;
+  saveCode();
+  const P = st.probs[st.cur], p = P.p, idx = st.cur;
+  const tests = all ? p.tests : p.tests.filter(t => t.v);
+  $("#runBtn").disabled = $("#submitCodeBtn").disabled = true;
+  const status = m => { $("#codeStatus").innerHTML = `<span class="spinner"></span>${esc(m)}`; };
+  status("Compiling…");
+  const r = P.lang === "cpp" ? await runCpp(p, P.code.cpp, tests.map(t => t.a), status) : await Runner.run(P.lang, P.code[P.lang], p.fn, tests.map(t => t.a), status);
+  updLangNote();
+  if (!S.st || S.st !== st) return; // section ended while running
+  $("#runBtn").disabled = $("#submitCodeBtn").disabled = false;
+  $("#codeStatus").textContent = "";
+  const norm = s => { try { return JSON.stringify(JSON.parse(s)); } catch { return s; } };
+  let html, passed = 0;
+  if (r.error) html = `<div class="bad">${esc(r.error)}</div>`;
+  else {
+    html = r.results.map((res, i) => {
+      const t = tests[i], pass = res.ok && norm(res.out) === JSON.stringify(t.x);
+      if (pass) passed++;
+      const hidden = all && !t.v;
+      const body = hidden ? "" :
+        `\nInput:    ${fmtArgs(p, t.a)}\nExpected: ${esc(JSON.stringify(t.x))}\nYour output: ${res.ok ? esc(res.out) : `<span class="bad">${esc(res.err)}</span>`}` +
+        (res.stdout ? `\nStdout:\n${esc(res.stdout)}` : "");
+      return `<div class="tc ${pass?"pass":"fail"}"><b>${hidden?"Hidden test":"Test"} case ${i+1}:</b> <span class="${pass?"ok":"bad"}">${pass?"Passed":"Failed"}</span>${body}</div>`;
+    }).join("");
+    html = `<div style="margin-bottom:8px"><b>${all ? "Submission" : "Sample run"}: ${passed}/${tests.length} test cases passed</b></div>` + html;
+  }
+  if (all) {
+    P.submits++;
+    const frac = r.error ? 0 : passed / tests.length;
+    if (frac >= P.best) { P.best = frac; P.bestPassed = passed; P.bestCode = P.code[P.lang]; P.bestLang = P.lang; }
+    html = `<div class="notice" style="margin:0 0 8px">Code submitted. Score for this problem: <b>${Math.round(frac*100)}%</b> (best so far: ${Math.round(P.best*100)}%). You may keep improving and resubmit.</div>` + html;
+  }
+  P.out = html;
+  if (st.cur === idx) { $("#codeOut").innerHTML = html; if (all) renderTabsOnly(); }
+}
+function renderTabsOnly(){ const st = S.st; document.querySelectorAll("#ptabs .ptab .st").forEach((s,i) => s.textContent = st.probs[i].submits ? Math.round(st.probs[i].best*100)+"%" : ""); }
+$("#runBtn").onclick = () => execute(false);
+$("#submitCodeBtn").onclick = () => execute(true);
+
+/* editor behaviour */
+const ta = $("#code"), gut = $("#gutter");
+function setCode(v){ ta.value = v; updGutter(); ta.scrollTop = 0; }
+function updGutter(){ const n = ta.value.split("\n").length; gut.textContent = Array.from({length:n}, (_,i) => i+1).join("\n"); gut.scrollTop = ta.scrollTop; }
+ta.addEventListener("input", updGutter);
+ta.addEventListener("scroll", () => gut.scrollTop = ta.scrollTop);
+ta.addEventListener("keydown", e => {
+  const s = ta.selectionStart, en = ta.selectionEnd, v = ta.value;
+  if (e.key === "Tab") {
+    e.preventDefault();
+    if (e.shiftKey) {
+      const ls = v.lastIndexOf("\n", s-1) + 1;
+      const rm = (v.slice(ls, ls+4).match(/^ {1,4}/) || [""])[0].length;
+      if (rm) { ta.value = v.slice(0, ls) + v.slice(ls+rm); ta.selectionStart = ta.selectionEnd = Math.max(ls, s-rm); }
+    } else { ta.setRangeText("    ", s, en, "end"); }
+    updGutter();
+  } else if (e.key === "Enter") {
+    e.preventDefault();
+    const ls = v.lastIndexOf("\n", s-1) + 1, line = v.slice(ls, s);
+    let ind = line.match(/^\s*/)[0];
+    if (/[:{\[(]\s*$/.test(line)) ind += "    ";
+    ta.setRangeText("\n" + ind, s, en, "end");
+    updGutter();
+  }
+});
+
+/* ======================= FULL SCREEN / PROCTORING ======================= */
+const isFull = () => !!document.fullscreenElement;
+const goFull = () => document.documentElement.requestFullscreen?.().catch(() => {});
+function updFs(){
+  $("#fsbar").classList.toggle("hidden", !S.active || isFull());
+  $("#fsBtn").classList.toggle("hidden", isFull());
+}
+$("#fsBtn").onclick = goFull;
+$("#fsReturn").onclick = goFull;
+document.addEventListener("fullscreenchange", () => {
+  if (!isFull() && S.active && S.st) S.tabSwitches++;
+  updFs();
+});
+document.addEventListener("visibilitychange", () => {
+  if (document.hidden && S.active && S.st) {
+    S.tabSwitches++;
+    modal("⚠ Warning", `You navigated away from the test window. This activity has been <b>recorded</b>.<br><br>Violations: <b>${S.tabSwitches}</b>. In a real proctored test, repeated violations may lead to disqualification.`, [{label:"Return to Test",cls:"orange"}]);
+  }
+});
+window.addEventListener("beforeunload", e => { if (S.active) { e.preventDefault(); e.returnValue = ""; } });
+document.addEventListener("contextmenu", e => { if (S.active && !e.target.closest("textarea")) e.preventDefault(); });
+
+/* ======================= RESULTS ======================= */
+function band(score){ return score >= 700 ? ["Excellent","var(--green)"] : score >= 550 ? ["Good","#2b7bd6"] : score >= 400 ? ["Average","var(--orange)"] : ["Needs Improvement","var(--red)"]; }
+function renderResults(){
+  $("#hdrTitle").textContent = "Performance Report";
+  const total = Math.round(S.results.reduce((a,r) => a + r.score, 0) / S.results.length);
+  const elapsed = (Date.now() - S.testStart)/1000;
+  const cards = S.results.map(r => {
+    const [b, c] = band(r.score);
+    const att = r.asked ? r.asked.filter(a => a.chosen !== null).length : 0;
+    const seen = r.asked ? r.asked.filter(a => a.time > 0) : [];
+    const extra = r.asked
+      ? `Attempted: <b>${att}/${r.cfg.count}</b><br>Correct: <b>${r.correct}</b> · Accuracy: <b>${att ? Math.round(r.correct/att*100) : 0}%</b><br>Avg time / question: <b>${seen.length ? Math.round(seen.reduce((a,x)=>a+x.time,0)/seen.length) : 0}s</b>`
+      : `Problems: ${r.probs.map((p,i) => `P${i+1} <b>${p.bestPassed}/${p.p.tests.length}</b>`).join(" · ")}<br>Test cases passed: <b>${Math.round(r.frac*100)}%</b>`;
+    return `<div class="score-card"><div class="muted" style="font-size:13px;font-weight:600">${r.cfg.name}</div>
+      <div class="big">${r.score} <small>/ 900</small></div>
+      <div class="bar"><i style="width:${(r.score-100)/8}%"></i></div>
+      <div style="color:${c};font-weight:600;font-size:13px;margin-bottom:6px">${b}</div>
+      <div class="kv">${extra}<br>Time used: <b>${fmt(r.timeUsed)}</b> of ${fmt(r.cfg.time)}</div></div>`;
+  }).join("");
+
+  const reviews = S.results.map(r => {
+    if (r.asked) {
+      const items = r.asked.map((a,i) => `<div class="ritem">
+        <b>Q${i+1}.</b> ${a.chosen === null ? '<span class="muted" style="font-weight:600">— Not answered</span>' : `<span class="${a.ok?"ok":"bad"}">${a.ok?"✔ Correct":"✘ Incorrect"}</span>`}${a.marked ? '<span class="badge">Marked for review</span>' : ""}<span class="badge">${["","Easy","Medium","Hard"][a.q.d]}</span><span class="badge">${Math.round(a.time)}s</span>
+        ${a.q.p ? `<div class="muted" style="font-size:12px;margin-top:4px">(Reading comprehension)</div>` : ""}
+        <div style="white-space:pre-line;margin:6px 0">${esc(a.q.q)}</div>
+        ${a.q.order.map((oi,k) => `<div class="ropt ${oi===a.q.a?"c":oi===a.chosen?"w":""}">${"ABCD"[k]}. ${esc(a.q.o[oi])}</div>`).join("")}
+        <div class="expl"><b>Explanation:</b> ${esc(a.q.e)}</div></div>`).join("");
+      const missed = r.cfg.count - r.asked.length;
+      return `<details class="rv"><summary>${r.cfg.name} — review answers (${r.correct}/${r.cfg.count})</summary>${items}${missed ? `<div class="ritem bad">${missed} question(s) not attempted — time ran out.</div>` : ""}</details>`;
+    }
+    return `<details class="rv"><summary>${r.cfg.name} — review submissions</summary>${r.probs.map((p,i) => `<div class="ritem"><b>Problem ${i+1}: ${esc(p.p.title)}</b> — ${p.submits ? `${p.bestPassed}/${p.p.tests.length} test cases passed` : `<span class="bad">not submitted</span>`}
+      ${p.bestCode ? `<pre style="background:#1e1e1e;color:#d4d4d4;padding:10px;border-radius:4px;overflow:auto;font-size:12.5px">${esc(p.bestCode)}</pre><span class="muted" style="font-size:12px">Best submission (${p.bestLang})</span>` : ""}</div>`).join("")}</details>`;
+  }).join("");
+
+  const [b, c] = band(total);
+  $("#scrResults").innerHTML = `
+    <div class="card" style="display:flex;gap:30px;align-items:center;flex-wrap:wrap">
+      <div style="flex:1;min-width:260px">
+        <div class="muted" style="font-size:13px">Candidate</div><h2 style="margin-bottom:4px">${esc(S.name)}</h2>
+        <div class="kv">Test ID: <b>${S.tid}</b> · Total time: <b>${fmt(elapsed)}</b> · Violations (tab switch / full-screen exit): <b style="color:${S.tabSwitches?"var(--red)":"inherit"}">${S.tabSwitches}</b></div>
+      </div>
+      <div class="center"><div class="muted" style="font-size:13px">Average Module Score</div><div style="font-size:44px;font-weight:700;color:var(--navy)">${total}</div><div style="color:${c};font-weight:600">${b}</div></div>
+    </div>
+    <div class="grid4">${cards}</div>
+    <div class="notice">Scores are on a 100–900 scale, weighted by question difficulty (adaptive). They are an <b>estimate</b> for self-practice and are not comparable to official percentiles. As a rough guide, many recruiters look for 500+ in each module.</div>
+    <h2 style="margin-top:24px">Detailed Review</h2>${reviews}
+    <div class="center" style="margin:26px 0"><button class="btn orange" onclick="location.reload()">Take Another Attempt</button></div>`;
+  show("scrResults");
+}
+
+show("scrLogin");
+</script>
+</body>
+</html>

@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "amcat-mock",
+      "runtimeExecutable": "python",
+      "runtimeArgs": ["-m", "http.server", "8766", "--directory", "C:/Users/Sanskriti/Desktop/AMCAT Mock Test"],
+      "port": 8766
+    }
+  ]
+}
