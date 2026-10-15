@@ -227,6 +227,9 @@ h1,h2,h3{color:#33414a}
 .ocard.sel{border-color:var(--green);background:#edf6f0;box-shadow:inset 4px 0 0 var(--green),0 1px 4px rgba(0,0,0,.08);color:#1f3b2b;font-weight:600}
 .prog{width:46px;padding:22px 0;display:flex;flex-direction:column;align-items:center;gap:12px;overflow:auto;background:transparent;scrollbar-width:none}
 .prog::-webkit-scrollbar{display:none}
+/* question / coding screens fill the window exactly: no page scrollbar */
+body.testing{overflow:hidden}
+body.testing footer.disc{display:none}
 .pc{width:22px;height:22px;border-radius:50%;background:#555b5f;color:#fff;font-size:10.5px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .2s}
 .pc.done{background:#d8dbdd;color:#f7f8f8}
 .pc.cur{background:#fff;color:#555b5f;border:1.5px solid #8e9599;box-shadow:0 0 0 3px #eceeef}
@@ -535,7 +538,7 @@ const fmt = s => { s = Math.max(0, Math.ceil(s)); return String(Math.floor(s/60)
 const shuffle = a => { a = a.slice(); for (let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a; };
 const scale = f => Math.min(900, Math.max(100, Math.round((100 + 800*f)/5)*5));
 const SCREENS = ["scrLogin","scrInstr","scrSecIntro","scrMcq","scrAuto","scrSecDone","scrResults"];
-function show(id){ SCREENS.forEach(s => $("#"+s).classList.toggle("hidden", s!==id)); window.scrollTo(0,0); }
+function show(id){ SCREENS.forEach(s => $("#"+s).classList.toggle("hidden", s!==id)); document.body.classList.toggle("testing", id === "scrMcq" || id === "scrAuto"); window.scrollTo(0,0); }
 
 let LOGO_IMG = null;
 const LOGO_SVG = `<svg width="92" height="40" viewBox="0 0 92 40" aria-label="SHL"><text x="2" y="31" font-family="Arial,Helvetica,sans-serif" font-size="32" fill="#4a4f53" letter-spacing="1">SHL</text><circle cx="80" cy="29" r="3.4" fill="#8dc63f"/></svg>`;
