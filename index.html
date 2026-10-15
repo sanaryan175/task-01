@@ -173,14 +173,91 @@ details.rv summary{padding:14px 18px;font-weight:600;color:var(--navy);cursor:po
 .overlay{position:fixed;inset:0;background:rgba(10,20,40,.55);display:flex;align-items:center;justify-content:center;z-index:100}
 .modal{background:#fff;border-radius:6px;max-width:460px;width:92%;padding:24px 26px;box-shadow:0 10px 40px rgba(0,0,0,.3);border-top:4px solid var(--orange)}
 .modal .acts{display:flex;gap:10px;justify-content:flex-end;margin-top:20px}
-.fsbar{position:fixed;left:0;right:0;top:0;z-index:90;background:var(--red);color:#fff;display:flex;align-items:center;justify-content:center;gap:16px;padding:10px 16px;font-weight:600;box-shadow:0 2px 10px rgba(0,0,0,.25)}
-.fsbar .btn{background:#fff;color:var(--red)}
+.fsgate{position:fixed;inset:0;z-index:95;background:rgba(15,27,48,.96);color:#fff;display:flex;align-items:center;justify-content:center;text-align:center;padding:20px}
+.fsgate .box{max-width:460px}
+.fsgate .ic{font-size:54px;line-height:1;margin-bottom:14px}
+.fsgate h2{color:#fff;margin-bottom:10px}
+.fsgate p{color:#cbd5e1;line-height:1.6;margin:0 0 8px}
+.fsgate .btn{margin-top:16px;padding:12px 34px;font-size:16px}
 .xbtn{background:none;border:0;font-size:18px;line-height:1;color:#555}
 .spinner{display:inline-block;width:14px;height:14px;border:2px solid #c9d3e0;border-top-color:var(--navy2);border-radius:50%;animation:spin .8s linear infinite;vertical-align:-2px;margin-right:6px}
 @keyframes spin{to{transform:rotate(360deg)}}
 footer.disc{text-align:center;font-size:11.5px;color:var(--muted);padding:18px}
 @media(max-width:700px){.mcqgrid{grid-template-columns:1fr}.side{position:static;height:auto}}
 @media(max-width:900px){.split,.autowrap{grid-template-columns:1fr;height:auto}.cand{display:none}}
+
+/* ======================= SHL skin (matches the real AMCAT test screens) ======================= */
+:root{--navy:#33414a;--navy2:#2a7d8b;--orange:#276b45;--bg:#eceeef;--line:#e1e4e6;--green:#276b45;--teal:#2a7d8b;--soft:#f5f6f7}
+body{font-family:"Open Sans","Segoe UI",Arial,sans-serif;font-size:14.5px;color:#3a4246}
+header.top{background:#fff;border-bottom:1px solid #dcdfe1;height:58px;box-shadow:none;padding:0 26px}
+.logo img{height:34px}
+.sec-title{display:none}
+header.top .grow{flex:1}
+.timers{position:absolute;left:50%;transform:translateX(-50%)}
+.timer{background:#f4f4f4;color:#2b2b2b;border:2px solid #4a4a4a;border-radius:20px;padding:2px 18px;min-width:0}
+.timer small{display:none}
+.timer b{font-family:"Segoe UI",Arial,sans-serif;font-size:15px;font-weight:700;letter-spacing:.5px}
+.timers.warn #tSec{background:#fdecea;border-color:var(--red);color:var(--red)}
+.hicons{display:flex;gap:18px;align-items:center}
+.hicons button{background:none;border:0;color:#6b7378;font-size:13px;display:flex;align-items:center;gap:6px;padding:4px}
+.hicons .q{width:20px;height:20px;border:1.5px solid #7b8287;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-weight:700;font-size:12px}
+.subbar{display:none!important}
+.btn{border-radius:20px}
+.btn.pill{text-transform:uppercase;font-size:12px;letter-spacing:.5px;padding:10px 22px;font-weight:700}
+.btn.outline{background:#fff;color:#4a5257;border:1px solid #b7bec2}
+.card{border-radius:4px}
+h1,h2,h3{color:#33414a}
+
+/* question screen: passage / question on the left, options on the right */
+#scrMcq{max-width:none!important;margin:14px auto;padding:0 18px}
+.shl{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr) auto;background:#fff;border:1px solid var(--line);height:calc(100vh - 88px);min-height:470px;box-shadow:0 1px 3px rgba(0,0,0,.05)}
+.shl.pr{height:calc(100vh - 88px)}
+.shl-l{padding:28px 34px;overflow:auto;border-right:1px solid var(--line);background:#fcfcfc;line-height:1.8;color:#3d4347}
+.shl-l p{margin:0 0 16px}
+.shl-r{display:flex;flex-direction:column;min-height:0}
+.shl-rc{flex:1;overflow:auto;padding:26px 30px 10px}
+.shl-f{padding:12px 24px 18px;display:flex;justify-content:flex-end;gap:10px;flex-wrap:wrap;align-items:center}
+.lbl{color:var(--teal);font-weight:700;font-size:13.5px;margin-bottom:14px}
+.lbl.up{text-transform:uppercase;letter-spacing:.3px}
+.instr{font-weight:700;color:#2f3437;margin-bottom:18px;line-height:1.55}
+.qt{color:#4a5054;line-height:1.75;white-space:pre-line;margin-bottom:22px}
+.ocard{display:block;background:#fff;border:1px solid #eceeef;border-radius:3px;box-shadow:0 1px 4px rgba(0,0,0,.09);padding:20px 18px;margin-bottom:16px;font-size:13.5px;color:#4a4f53;cursor:pointer;transition:border-color .12s,background .12s}
+.ocard:hover{border-color:#c5d3cb}
+.ocard input{display:none}
+.ocard.sel{border-color:var(--green);background:#edf6f0;box-shadow:inset 4px 0 0 var(--green),0 1px 4px rgba(0,0,0,.08);color:#1f3b2b;font-weight:600}
+.prog{width:48px;border-left:1px solid var(--line);padding:18px 0;display:flex;flex-direction:column;align-items:center;gap:10px;overflow:auto;background:#fafafa}
+.pc{width:24px;height:24px;border-radius:50%;border:1.5px solid #b9bfc3;color:#9aa1a6;font-size:11px;display:flex;align-items:center;justify-content:center;flex-shrink:0;background:#fff}
+.pc.done{background:#5d6468;border-color:#5d6468;color:#fff}
+.pc.cur{border-color:#3d4447;color:#3d4447;font-weight:700;box-shadow:0 0 0 3px #dfe3e5}
+.qmeta{display:flex;align-items:center;gap:8px;font-size:13px;color:#6b7378;margin-bottom:16px}
+.qmeta b{color:#33414a}
+
+/* practice-mode side panel */
+.mcqgrid{grid-template-columns:minmax(0,1fr) 250px;gap:14px}
+.side{top:72px;height:calc(100vh - 88px);border-radius:4px}
+.side-h{background:var(--teal)}
+.side-f .btn{background:var(--green);border-radius:20px;text-transform:uppercase;font-size:12.5px;letter-spacing:.5px}
+.sectabs{border-radius:4px;margin-bottom:10px}
+.stab.on{border-bottom-color:var(--green);background:#f1f8f4}
+
+/* automata: light editor + console like the real test */
+#scrAuto{margin:14px auto;padding:0 18px}
+.autowrap{height:calc(100vh - 88px)}
+.autowrap.pr{height:calc(100vh - 88px)}
+.pane{border-radius:0}
+.ptab.on{background:var(--teal);border-color:var(--teal)}
+.pbody h2{font-size:18px;color:#33414a}
+.pbody h4{margin:18px 0 4px;font-size:14.5px;color:#3a4246}
+.pbody .gl{color:#8a9196}
+.editor{background:#fff;font-size:14px}
+.gutter{background:#f2f2f2;color:#9a9a9a;border-right:1px solid #e2e2e2}
+.editor textarea{color:#1f2328;caret-color:#000}
+.console{height:240px}
+.console .out{background:#fff;font-family:inherit;font-size:14px}
+.cohead{font-size:17px;font-weight:600;color:#33414a;margin:2px 0 8px}
+.cohead .s{color:var(--green)}.cohead .e{color:var(--red)}
+.tcount{font-size:15px;color:#4a5257;margin-bottom:10px}
+.tc{font-family:Consolas,monospace;font-size:12.5px;white-space:pre-wrap}
 </style>
 </head>
 <body>
@@ -188,13 +265,13 @@ footer.disc{text-align:center;font-size:11.5px;color:var(--muted);padding:18px}
 <header class="top">
   <div class="logo"></div>
   <div class="sec-title" id="hdrTitle">Online Assessment</div>
-  <div class="cand" id="hdrCand"></div>
-  <div class="timers hidden" id="timer"><div class="timer" id="tSec"><small>Section</small><b id="timerVal">00:00</b></div></div>
+  <div class="grow"></div>
+  <div class="timers hidden" id="timer"><div class="timer" id="tSec"><small>Section</small><b id="timerVal">00 : 00</b></div></div>
+  <div class="hicons"><div class="cand" id="hdrCand"></div><button id="helpBtn" title="Help"><span class="q">?</span>Help</button></div>
 </header>
 <div class="subbar hidden" id="subbar">
   <span id="qnum"></span>
   <div class="dots" id="dots"></div>
-  <button class="btn ghost" id="fsBtn">⛶ Full Screen</button>
 </div>
 
 <!-- LOGIN -->
@@ -228,7 +305,7 @@ footer.disc{text-align:center;font-size:11.5px;color:var(--muted);padding:18px}
       <li>Once you submit a module, you <b>cannot return</b> to it.</li>
       <li>In the <b>Automata</b> module you write code to solve problems. Use <b>Compile &amp; Run</b> to test against sample cases and <b>Submit Code</b> to evaluate against all test cases (including hidden ones). You may switch between the problems freely within the module.</li>
       <li>Do not switch tabs, minimise the window or exit full screen. All such activity is <b>recorded</b>.</li>
-      <li>The test runs in full screen. If you exit, use the <b>Back to Full Screen</b> button to return. Every exit is recorded.</li>
+      <li>The test runs in full screen. If you exit, the test is hidden until you click <b>Enter Full Screen</b>. Every exit is recorded.</li>
     </ol>
     <div class="notice">The timer starts the moment you click <b>Start</b> on each module. Keep pen and paper ready, and switch off distractions — treat this exactly like the real thing.</div>
     <label style="display:flex;gap:10px;align-items:center;margin:18px 0"><input type="checkbox" id="agree"> I have read and understood the instructions. I agree to follow the test rules.</label>
@@ -257,7 +334,7 @@ footer.disc{text-align:center;font-size:11.5px;color:var(--muted);padding:18px}
   <div id="autoTabs"></div>
   <div class="autowrap">
     <div class="pane">
-      <div class="pane-h"><div class="ptabs" id="ptabs"></div><span style="flex:1"></span><button class="btn red sm" id="finishAuto">Finish Module</button></div>
+      <div class="pane-h"><div class="ptabs" id="ptabs"></div><span style="flex:1"></span><button class="btn outline sm" id="finishAuto">Finish Module</button></div>
       <div class="pbody" id="pstmt"></div>
     </div>
     <div class="pane">
@@ -266,12 +343,12 @@ footer.disc{text-align:center;font-size:11.5px;color:var(--muted);padding:18px}
         <span class="muted" id="langNote" style="font-size:12px"></span>
         <span style="flex:1"></span>
         <button class="btn light sm" id="resetCode">Reset</button>
-        <button class="btn sm" id="runBtn">▶ Compile &amp; Run</button>
-        <button class="btn orange sm" id="submitCodeBtn">Submit Code</button>
+        <button class="btn outline sm" id="runBtn">Compile &amp; Run</button>
+        <button class="btn pill green sm" id="submitCodeBtn">Submit</button>
       </div>
       <div class="editor"><pre class="gutter" id="gutter">1</pre><textarea id="code" spellcheck="false" autocomplete="off" autocapitalize="off"></textarea></div>
       <div class="console">
-        <div class="pane-h" style="border-top:0"><b>Output</b><span style="flex:1"></span><span id="codeStatus" class="muted"></span></div>
+        <div class="pane-h" style="border-top:0"><b>Console</b><span style="flex:1"></span><span id="codeStatus" class="muted"></span></div>
         <div class="out" id="codeOut"><span class="muted">Click "Compile &amp; Run" to test your code against the sample test cases.</span></div>
       </div>
     </div>
@@ -284,6 +361,7 @@ footer.disc{text-align:center;font-size:11.5px;color:var(--muted);padding:18px}
     <div style="font-size:46px;color:var(--green)">✔</div>
     <h2 id="sdTitle"></h2>
     <p class="muted" id="sdMsg"></p>
+    <table class="t" id="sdList" style="max-width:520px;margin:18px auto 22px"></table>
     <button class="btn orange" id="sdNext"></button>
   </div>
 </main>
@@ -291,7 +369,13 @@ footer.disc{text-align:center;font-size:11.5px;color:var(--muted);padding:18px}
 <!-- RESULTS -->
 <main id="scrResults" class="hidden"></main>
 
-<div id="fsbar" class="fsbar hidden">⚠ You have exited full screen mode. This has been recorded. <button class="btn sm" id="fsReturn">Back to Full Screen</button></div>
+<div id="fsbar" class="fsgate hidden"><div class="box">
+  <div class="ic">⛶</div>
+  <h2 id="fsTitle">Full screen mode is required</h2>
+  <p id="fsMsg">This assessment must be taken in full screen mode.</p>
+  <p style="font-size:13px">Your timer keeps running while this screen is shown.</p>
+  <button class="btn orange" id="fsReturn">Enter Full Screen</button>
+</div></div>
 <div id="modalRoot"></div>
 <footer class="disc" id="disc">Unofficial practice mock for self-preparation. Not affiliated with or endorsed by AMCAT / SHL. Question content is original practice material.</footer>
 
@@ -453,7 +537,7 @@ const SCREENS = ["scrLogin","scrInstr","scrSecIntro","scrMcq","scrAuto","scrSecD
 function show(id){ SCREENS.forEach(s => $("#"+s).classList.toggle("hidden", s!==id)); window.scrollTo(0,0); }
 
 let LOGO_IMG = null;
-const LOGO_SVG = `<svg width="168" height="42" viewBox="0 0 168 42" aria-label="AMCAT"><circle cx="20" cy="21" r="17" fill="#f39200"/><path d="M11.5 29 L20 12 L28.5 29 M15 23 h10" stroke="#fff" stroke-width="3.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/><text x="44" y="29" font-family="'Arial Black',Arial,sans-serif" font-weight="900" font-size="25" fill="#14325c" letter-spacing="-0.5">amcat</text><text x="129" y="17" font-family="Arial" font-size="8" fill="#f39200" font-weight="700">MOCK</text></svg>`;
+const LOGO_SVG = `<svg width="92" height="40" viewBox="0 0 92 40" aria-label="SHL"><text x="2" y="31" font-family="Arial,Helvetica,sans-serif" font-size="32" fill="#4a4f53" letter-spacing="1">SHL</text><circle cx="80" cy="29" r="3.4" fill="#8dc63f"/></svg>`;
 function renderLogos(){ document.querySelectorAll(".logo").forEach(el => el.innerHTML = LOGO_IMG ? `<img src="${LOGO_IMG}" alt="logo">` : LOGO_SVG); }
 // Drop an official logo file named "logo.png" next to this HTML file to use it instead of the built-in one.
 (() => { const i = new Image(); i.onload = () => { LOGO_IMG = "logo.png"; renderLogos(); }; i.src = "logo.png"; })();
@@ -530,7 +614,7 @@ $("#siStart").onclick = () => {
 function tick(){
   const st = S.st; if (!st) return;
   const left = (st.endAt - Date.now())/1000;
-  $("#timerVal").textContent = fmt(left);
+  $("#timerVal").textContent = fmt(left).replace(":", " : ");
   $("#timer").classList.toggle("warn", left <= 120);
   $("#timer").classList.toggle("blink", left <= 60);
   if (left <= 0) finishSection(true);
@@ -566,6 +650,10 @@ function finishSection(timedOut){
   $("#sdTitle").textContent = timedOut ? "Time's up!" : "Module submitted";
   $("#sdMsg").textContent = (timedOut ? `The time for ${st.cfg.name} is over and your responses were submitted automatically.` : `Your responses for ${st.cfg.name} have been recorded.`) + (last ? "" : ` Next module: ${S.plan[S.idx+1].name}.`);
   $("#sdNext").textContent = last ? "Finish Test & View Report" : "Proceed to Next Module";
+  $("#sdList").innerHTML = `<tr><th>Module</th><th>Questions</th><th>Time</th><th>Status</th></tr>` + S.plan.map((m,i) => {
+    const stt = i <= S.idx ? `<span class="ok">✓ Completed</span>` : i === S.idx+1 ? `<b style="color:var(--teal)">Up next</b>` : `<span class="muted">Remaining</span>`;
+    return `<tr><td style="text-align:left">${esc(m.name)}</td><td>${m.count}</td><td>${m.time/60} min</td><td>${stt}</td></tr>`;
+  }).join("");
   show("scrSecDone");
 }
 $("#sdNext").onclick = () => {
@@ -575,14 +663,30 @@ $("#sdNext").onclick = () => {
 
 /* ======================= SECTION TABS ======================= */
 function secTabsHTML(){
+  return "";   // like the real test, modules are not shown while a section is running
   return `<div class="sectabs">${S.plan.map((s,i) => {
     const k = i < S.idx ? "done" : i === S.idx ? "on" : "lock";
     return `<div class="stab ${k}"><b>${esc(s.name)}</b></div>`;
   }).join("")}</div>`;
 }
-function qHeadHTML(num, total, flag){
-  return `<div class="qhead"><span><b>Question ${num}</b> <span class="tot">/ ${total}</span></span><span class="secbadge">${esc(S.st.cfg.name)}</span><span style="flex:1"></span>
-    <span class="marks" title="No negative marking"><span class="p">+1</span><span class="m">−0</span></span>${flag || ""}</div>`;
+/* ======================= SHL QUESTION LAYOUT ======================= */
+function splitQ(text){ const i = text.indexOf("\n"); return i < 0 ? ["Choose the correct option.", text] : [text.slice(0, i), text.slice(i+1)]; }
+function shlHTML(q, { chosen = null, footer = "", progress = "", meta = "", cls = "" } = {}){
+  const passage = q.p ? PASSAGES[q.p] : null;
+  const [ins, body] = splitQ(q.q);
+  const left = passage
+    ? `<div class="lbl up">Passage</div>${passage.map(t => `<p>${esc(t)}</p>`).join("")}`
+    : `<div class="instr">${esc(ins)}</div><div class="qt">${esc(body)}</div>`;
+  const top = passage ? `<div class="lbl">Choose the correct answer based on the passage.</div><div class="qt">${esc(q.q)}</div>` : "";
+  const cards = q.order.map(oi => `<label class="ocard ${chosen===oi?"sel":""}"><input type="radio" name="opt" value="${oi}" ${chosen===oi?"checked":""}>${esc(q.o[oi])}</label>`).join("");
+  return `<div class="shl ${cls}"><div class="shl-l">${left}</div>
+    <div class="shl-r"><div class="shl-rc">${meta}${top}<div class="lbl up">Options</div>${cards}</div><div class="shl-f">${footer}</div></div>${progress}</div>`;
+}
+function bindOptions(onPick){
+  document.querySelectorAll("#mcqBody input[name=opt]").forEach(r => r.onchange = () => {
+    document.querySelectorAll("#mcqBody .ocard").forEach(o => o.classList.toggle("sel", o.querySelector("input").checked));
+    onPick && onPick();
+  });
 }
 
 /* ======================= MCQ ======================= */
@@ -608,22 +712,9 @@ function nextQuestion(){
 }
 function renderMCQ(){
   const st = S.st, q = st.cur, n = st.asked.length;
-  $("#qnum").textContent = `Question ${n+1} of ${st.cfg.count}`;
-  $("#dots").innerHTML = Array.from({length:st.cfg.count}, (_,i) => `<span class="dot ${i<n?"done":i===n?"cur":""}"></span>`).join("");
-  const passage = q.p ? PASSAGES[q.p] : null;
-  const qhtml = `<div class="card qcard">
-      ${qHeadHTML(n+1, st.cfg.count)}
-      <div class="qtext">${esc(q.q)}</div>
-      <div class="opts">${q.order.map((oi,k) => `<label class="opt"><input type="radio" name="opt" value="${oi}"><span class="ol">${"ABCD"[k]}</span><span>${esc(q.o[oi])}</span></label>`).join("")}</div>
-      <div class="qfoot"><span class="diffhint">Select an option to continue. You cannot return to this question.</span><button class="btn orange" id="subAns" disabled>Submit Answer</button></div>
-    </div>`;
-  $("#mcqBody").innerHTML = secTabsHTML() + (passage
-    ? `<div class="split"><div class="card passage"><div class="plabel">Read the passage carefully</div>${passage.map(p=>`<p>${esc(p)}</p>`).join("")}</div>${qhtml}</div>`
-    : qhtml);
-  document.querySelectorAll("input[name=opt]").forEach(r => r.onchange = () => {
-    document.querySelectorAll(".opt").forEach(o => o.classList.toggle("sel", o.querySelector("input").checked));
-    $("#subAns").disabled = false;
-  });
+  const prog = `<div class="prog">${Array.from({length:st.cfg.count}, (_,i) => `<span class="pc ${i<n?"done":i===n?"cur":""}">${i+1}</span>`).join("")}</div>`;
+  $("#mcqBody").innerHTML = shlHTML(q, { progress: prog, footer: `<button class="btn pill green" id="subAns" disabled>Submit Answer</button>` });
+  bindOptions(() => $("#subAns").disabled = false);
   $("#subAns").onclick = submitMCQ;
 }
 function submitMCQ(){
@@ -664,16 +755,10 @@ function renderPalette(){
   $("#qnum").textContent = `Question ${st.pos+1} of ${n}`;
   const cnt = { nv:0, na:0, an:0, mr:0, am:0 };
   st.items.forEach(x => cnt[statusOf(x)]++);
-  const passage = q.p ? PASSAGES[q.p] : null;
-  const qhtml = `<div class="card qcard">
-      ${qHeadHTML(st.pos+1, n, `<button class="flag ${it.marked?"on":""}" id="pFlag" title="${it.marked?"Marked for review — click to unmark":"Mark for review"}">⚑</button>`)}
-      <div class="qtext">${esc(q.q)}</div>
-      <div class="opts">${q.order.map((oi,k) => `<label class="opt ${it.chosen===oi?"sel":""}"><input type="radio" name="opt" value="${oi}" ${it.chosen===oi?"checked":""}><span class="ol">${"ABCD"[k]}</span><span>${esc(q.o[oi])}</span></label>`).join("")}</div>
-      <div class="qfoot pal-f">
-        <div class="grp"><button class="btn purple sm" id="pMark">Mark for Review &amp; Next</button><button class="btn outline sm" id="pClear">Clear Response</button></div>
-        <div class="grp"><button class="btn outline sm" id="pPrev" ${st.pos===0?"disabled":""}>◀ Previous</button><button class="btn orange sm" id="pSave">${st.pos===n-1?"Save":"Save &amp; Next"}</button></div>
-      </div>
-    </div>`;
+  const meta = `<div class="qmeta"><b>Question ${st.pos+1}</b> of ${n}<span style="flex:1"></span><span class="marks" title="No negative marking"><span class="p">+1</span><span class="m">−0</span></span>
+      <button class="flag ${it.marked?"on":""}" id="pFlag" title="${it.marked?"Marked for review — click to unmark":"Mark for review"}">⚑</button></div>`;
+  const footer = `<button class="btn pill outline" id="pMark">Mark for Review &amp; Next</button><button class="btn pill outline" id="pClear">Clear Response</button>
+      <span style="flex:1"></span><button class="btn pill outline" id="pPrev" ${st.pos===0?"disabled":""}>Previous</button><button class="btn pill green" id="pSave">${st.pos===n-1?"Save":"Save &amp; Next"}</button>`;
   const LBL = { an:"Answered", na:"Not Answered", nv:"Not Visited", mr:"Marked", am:"Answered &amp; Marked (evaluated)" };
   const leg = k => `<div class="${k==="am"?"wide":""}"><span class="pb mini ${k}">${cnt[k]}</span>${LBL[k]}</div>`;
   const side = `<aside class="side">
@@ -684,13 +769,10 @@ function renderPalette(){
       <div class="pal">${st.items.map((x,i) => `<button class="pb ${statusOf(x)} ${i===st.pos?"cur":""}" data-i="${i}" title="${STATUS[statusOf(x)]}">${i+1}</button>`).join("")}</div>
       <div class="side-f"><button class="btn" id="pSubmit">Submit Section</button></div>
     </aside>`;
-  const main = passage
-    ? `<div class="split"><div class="card passage"><div class="plabel">Read the passage carefully</div>${passage.map(p=>`<p>${esc(p)}</p>`).join("")}</div>${qhtml}</div>`
-    : qhtml;
+  const main = shlHTML(q, { chosen: it.chosen, meta, footer, cls: "pr" });
   $("#mcqBody").innerHTML = `<div class="mcqgrid"><div>${secTabsHTML()}${main}</div>${side}</div>`;
   $("#pFlag").onclick = () => { saveSel(); it.marked = !it.marked; renderPalette(); };
-  document.querySelectorAll("#mcqBody input[name=opt]").forEach(r => r.onchange = () =>
-    document.querySelectorAll(".opt").forEach(o => o.classList.toggle("sel", o.querySelector("input").checked)));
+  bindOptions();
   const next = () => st.pos < n-1 ? goTo(st.pos+1) : renderPalette();
   $("#pSave").onclick = () => { saveSel(); it.marked = false; next(); };
   $("#pMark").onclick = () => { saveSel(); it.marked = true; next(); };
@@ -883,15 +965,16 @@ function startAutomata(){
 function renderAuto(){
   const st = S.st, P = st.probs[st.cur], p = P.p;
   $("#autoTabs").innerHTML = secTabsHTML();
+  document.querySelector(".autowrap").classList.toggle("pr", S.mode === "palette");
   $("#ptabs").innerHTML = st.probs.map((x,i) => `<button class="ptab ${i===st.cur?"on":""}" data-i="${i}">Problem ${i+1}<span class="st">${x.submits ? Math.round(x.best*100)+"%" : ""}</span></button>`).join("");
   $("#ptabs").querySelectorAll("button").forEach(b => b.onclick = () => { saveCode(); st.cur = +b.dataset.i; renderAuto(); });
   const vis = p.tests.filter(t => t.v);
   $("#pstmt").innerHTML = `<h2>${esc(p.title)}</h2>${p.desc}
-    <h3 style="margin-top:18px">Function signature</h3><pre>${esc(p.fn)}(${esc(p.params.join(", "))}) → ${esc(p.ret)}</pre>
-    <p class="muted" style="font-size:13px">Complete the function. Do not read input or print the answer — just <b>return</b> the result.</p>
-    <h3>Examples</h3>${vis.map((t,i) => `<pre><b>Example ${i+1}</b>\nInput:  ${fmtArgs(p, t.a)}\nOutput: ${esc(JSON.stringify(t.x))}</pre>`).join("")}
-    <h3>Constraints</h3><p>${esc(p.cons)}</p>
-    <p class="muted" style="font-size:13px">Test cases: ${p.tests.length} (${vis.length} sample + ${p.tests.length - vis.length} hidden)</p>`;
+    <h4>Function</h4><pre>${esc(p.fn)}(${esc(p.params.join(", "))}) → ${esc(p.ret)}</pre>
+    <p class="gl" style="font-size:13px">Complete the function. Do not read input or print the answer — just <b>return</b> the result.</p>
+    <h4>Constraints</h4><p class="gl">${esc(p.cons)}</p>
+    ${vis.map((t,i) => `<h4>Example ${i+1}</h4><div class="gl">Input:</div><div>${fmtArgs(p, t.a)}</div><div class="gl" style="margin-top:6px">Output:</div><div>${esc(JSON.stringify(t.x))}</div>`).join("")}
+    <p class="gl" style="font-size:13px;margin-top:18px">Test cases: ${p.tests.length} (${vis.length} sample + ${p.tests.length - vis.length} hidden)</p>`;
   $("#langSel").value = P.lang;
   setCode(P.code[P.lang]);
   $("#codeOut").innerHTML = P.out || `<span class="muted">Click "Compile &amp; Run" to test your code against the sample test cases.</span>`;
@@ -928,7 +1011,7 @@ async function execute(all){
   $("#codeStatus").textContent = "";
   const norm = s => { try { return JSON.stringify(JSON.parse(s)); } catch { return s; } };
   let html, passed = 0;
-  if (r.error) html = `<div class="bad">${esc(r.error)}</div>`;
+  if (r.error) html = `<div class="cohead">Console Output : <span class="e">${/^Compilation error/i.test(r.error) ? "Compilation Error" : "Error"}</span></div><div class="tc fail bad">${esc(r.error)}</div>`;
   else {
     html = r.results.map((res, i) => {
       const t = tests[i], pass = res.ok && norm(res.out) === JSON.stringify(t.x);
@@ -939,7 +1022,7 @@ async function execute(all){
         (res.stdout ? `\nStdout:\n${esc(res.stdout)}` : "");
       return `<div class="tc ${pass?"pass":"fail"}"><b>${hidden?"Hidden test":"Test"} case ${i+1}:</b> <span class="${pass?"ok":"bad"}">${pass?"Passed":"Failed"}</span>${body}</div>`;
     }).join("");
-    html = `<div style="margin-bottom:8px"><b>${all ? "Submission" : "Sample run"}: ${passed}/${tests.length} test cases passed</b></div>` + html;
+    html = `<div class="cohead">Console Output : <span class="s">Compilation Successful</span></div><div class="tcount">${passed}/${tests.length} test cases passed.${all ? "" : " <span class=\"gl\" style=\"font-size:12.5px\">(sample test cases)</span>"}</div>` + html;
   }
   if (all) {
     P.submits++;
@@ -984,11 +1067,31 @@ ta.addEventListener("keydown", e => {
 const isFull = () => !!document.fullscreenElement;
 const goFull = () => document.documentElement.requestFullscreen?.().catch(() => {});
 function updFs(){
-  $("#fsbar").classList.toggle("hidden", !S.active || isFull());
-  $("#fsBtn").classList.toggle("hidden", isFull());
+  // block the test until it is back in full screen (only where the browser supports it)
+  const block = S.active && document.fullscreenEnabled && !isFull() && !S.fsSkip;
+  $("#fsbar").classList.toggle("hidden", !block);
+  if (block) {
+    $("#fsTitle").textContent = S.tabSwitches ? "You have exited full screen mode" : "Full screen mode is required";
+    $("#fsMsg").innerHTML = S.tabSwitches
+      ? `This activity has been <b>recorded</b> (violations: <b>${S.tabSwitches}</b>). Return to full screen to continue your test.`
+      : "This assessment must be taken in full screen mode. Click the button below to continue.";
+  }
 }
-$("#fsBtn").onclick = goFull;
-$("#fsReturn").onclick = goFull;
+$("#helpBtn").onclick = () => modal("Help", `<ul style="padding-left:18px;margin:0">
+  <li>Select an option card, then click <b>Submit Answer</b>${S.mode === "palette" ? " / <b>Save &amp; Next</b>" : ""}.</li>
+  <li>${S.mode === "palette" ? "Use the question panel on the right to move between questions." : "You cannot go back to a previous question."}</li>
+  <li>The timer at the top shows the time left in this section. The section is submitted automatically when it reaches 00 : 00.</li>
+  <li>There is no negative marking.</li></ul>`, [{label:"Close", cls:"green"}]);
+$("#fsReturn").onclick = () => {
+  // if the browser refuses (or ignores) full screen, don't lock the candidate out
+  const blocked = () => {
+    if (isFull()) return;
+    $("#fsMsg").innerHTML = `Your browser blocked full screen mode. Press <b>F11</b> and try again, or <a href="#" id="fsSkip" style="color:#fca5a5">continue without full screen</a>.`;
+    $("#fsSkip").onclick = e => { e.preventDefault(); S.fsSkip = true; updFs(); };
+  };
+  document.documentElement.requestFullscreen().catch(blocked);
+  setTimeout(blocked, 1500);
+};
 document.addEventListener("fullscreenchange", () => {
   if (!isFull() && S.active && S.st) S.tabSwitches++;
   updFs();
