@@ -218,7 +218,7 @@ textarea.essay:focus{border-color:var(--teal)}
   <div class="sec-title" id="hdrTitle">Online Assessment</div>
   <div class="grow"></div>
   <div class="timers hidden" id="timer"><div class="timer" id="tSec"><small>Section</small><b id="timerVal">00 : 00</b></div></div>
-  <div class="hicons"><div class="cand" id="hdrCand"></div><button id="helpBtn" title="Help"><span class="q">?</span>Help</button></div>
+  <div class="hicons"><div class="cand" id="hdrCand"></div><button id="fsToggle" title="Full screen"></button><button id="helpBtn" title="Help"><span class="q">?</span>Help</button></div>
 </header>
 <div class="subbar hidden" id="subbar">
   <span id="qnum"></span>
@@ -1121,7 +1121,9 @@ const isFull = () => !!document.fullscreenElement;
 const goFull = () => document.documentElement.requestFullscreen?.().catch(() => {});
 function updFs(){
   // block the test until it is back in full screen (only where the browser supports it)
-  const block = S.active && document.fullscreenEnabled && !isFull() && !S.fsSkip;
+  $("#fsToggle").innerHTML = FS_ICON[isFull() ? "exit" : "enter"];
+  $("#fsToggle").title = isFull() ? "Exit full screen" : "Full screen";
+  const block = S.active && document.fullscreenEnabled && !isFull() && !S.fsSkip && !S.fsManual;
   $("#fsbar").classList.toggle("hidden", !block);
   if (block) {
     $("#fsTitle").textContent = S.tabSwitches ? "You have exited full screen mode" : "Full screen mode is required";
@@ -1146,9 +1148,20 @@ $("#fsReturn").onclick = () => {
   setTimeout(blocked, 1500);
 };
 document.addEventListener("fullscreenchange", () => {
-  if (!isFull() && S.active && S.st) S.tabSwitches++;
+  if (isFull()) S.fsManual = false;
+  else if (S.active && S.st && !S.fsManual) S.tabSwitches++;   // leaving with Esc etc. counts as a violation
   updFs();
 });
+/* header full-screen button, like the real test: leaving through it is the candidate's choice, not a violation */
+const FS_ICON = {
+  enter: `<svg width="17" height="17" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M1.5 5.5v-4h4M10.5 1.5h4v4M14.5 10.5v4h-4M5.5 14.5h-4v-4"/></svg>`,
+  exit:  `<svg width="17" height="17" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M5.5 1.5v4h-4M14.5 5.5h-4v-4M10.5 14.5v-4h4M1.5 10.5h4v4"/></svg>`,
+};
+$("#fsToggle").onclick = () => {
+  if (isFull()) { S.fsManual = true; document.exitFullscreen().catch(() => {}); }
+  else document.documentElement.requestFullscreen?.().catch(() => {});
+};
+updFs();
 document.addEventListener("visibilitychange", () => {
   if (document.hidden && S.active && S.st) {
     S.tabSwitches++;
