@@ -80,54 +80,6 @@ ol.ins li,ul.ins li{margin:7px 0;line-height:1.5}
 .qfoot{margin-top:auto;padding-top:24px;display:flex;justify-content:space-between;align-items:center}
 .diffhint{font-size:12px;color:var(--muted)}
 
-/* question palette (practice mode) */
-.mcqgrid{display:grid;grid-template-columns:minmax(0,1fr) 260px;gap:18px;align-items:start}
-.side{background:#fff;border:1px solid var(--line);border-radius:8px;position:sticky;top:118px;height:calc(100vh - 134px);min-height:430px;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.05)}
-.side-user{display:flex;align-items:center;gap:14px;padding:16px;border-bottom:1px solid var(--line)}
-.avatar{width:46px;height:46px;border-radius:6px;background:#6f7f8f;color:#fff;font-size:22px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.side-user b{font-size:15px;color:#111827;word-break:break-word}
-.legend{display:grid;grid-template-columns:1fr 1fr;gap:10px 8px;padding:14px 14px 12px;font-size:12.5px;color:#374151}
-.legend div{display:flex;align-items:center;gap:8px;line-height:1.2}
-.legend .wide{grid-column:1 / -1}
-.side-h{background:#4a6fa5;color:#fff;padding:9px 14px;font-weight:600;font-size:14px}
-.side-c{padding:10px 14px 4px;font-size:12.5px;color:#4b5563}
-.pal{flex:1;display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:42px;gap:12px 10px;padding:8px 14px 14px;overflow-y:auto;align-content:start}
-.pb{display:inline-flex;align-items:center;justify-content:center;height:42px;border:0;background:#e3e8f0;border-radius:6px;font-weight:600;color:#374151;position:relative;font-size:14px;padding:0}
-.pb:hover{filter:brightness(.96)}
-.pb.an{background:#1f9d55;color:#fff;border-radius:2px;clip-path:polygon(0 0,100% 0,100% 72%,50% 100%,0 72%);padding-bottom:5px}
-.pb.na{background:#e04b3c;color:#fff;border-radius:2px;clip-path:polygon(0 0,100% 0,100% 100%,50% 78%,0 100%);padding-bottom:6px}
-.pb.mr,.pb.am{background:#7b4cc4;color:#fff;border-radius:50%;width:42px;justify-self:center}
-.pb.am::after{content:"✓";position:absolute;right:-3px;bottom:-3px;width:16px;height:16px;border-radius:50%;background:#1f9d55;color:#fff;font-size:10px;line-height:16px;border:1.5px solid #fff}
-.pb.cur{box-shadow:inset 0 0 0 2px #1e3a8a}
-.pb.cur.an,.pb.cur.na{filter:brightness(.88)}
-.pb.mini{height:24px;width:24px;min-width:24px;font-size:11px;flex-shrink:0;cursor:default;justify-self:auto}
-.pb.mini.mr,.pb.mini.am{width:24px}
-.pb.mini.am::after{width:12px;height:12px;line-height:12px;font-size:8px;right:-4px;bottom:-4px}
-.side-f{padding:12px 14px;border-top:1px solid var(--line)}
-.side-f .btn{width:100%;background:var(--orange);border-radius:6px;padding:11px}
-.qfoot.pal-f{flex-wrap:wrap;gap:10px}
-.qfoot.pal-f .grp{display:flex;gap:10px;flex-wrap:wrap}
-.btn.purple{background:var(--orange)}
-.btn.outline{background:#fff;color:var(--navy);border:1px solid #9aa5b4}
-
-/* section tabs + question header */
-.sectabs{display:flex;background:#fff;border:1px solid var(--line);border-radius:8px;margin-bottom:12px;overflow-x:auto}
-.stab{padding:13px 22px 11px;border-bottom:3px solid transparent;white-space:nowrap;display:flex;flex-direction:column;gap:2px}
-.stab b{font-size:14.5px;color:#9aa5b4;font-weight:600}
-.stab small{font-size:11.5px;color:#9aa5b4}
-.stab.on{border-bottom-color:var(--orange);background:#fff6f6}
-.stab.on b{color:var(--navy)}
-.stab.on small{color:var(--orange);font-weight:600}
-.stab.done b{color:#4b5563}
-.stab.done small{color:var(--green);font-weight:600}
-.qhead{display:flex;align-items:center;gap:10px;padding-bottom:14px;margin-bottom:18px;border-bottom:1px solid var(--line);font-size:15px}
-.qhead .tot{color:var(--muted)}
-.secbadge{background:#eef2fb;color:var(--navy2);font-size:12px;font-weight:600;padding:3px 10px;border-radius:12px}
-.marks{font-size:13px;font-weight:600}
-.marks .p{color:var(--green)}.marks .m{color:var(--red);margin-left:8px}
-.flag{border:1px solid #f3c58b;background:#fff8ee;color:#c2410c;border-radius:6px;width:32px;height:28px;font-size:14px}
-.flag.on{background:#7b4cc4;border-color:#7b4cc4;color:#fff}
-
 /* Automata */
 .autowrap{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:16px;height:calc(100vh - 205px);min-height:520px}
 .pane{background:#fff;border:1px solid var(--line);border-radius:6px;display:flex;flex-direction:column;overflow:hidden}
@@ -183,7 +135,6 @@ details.rv summary{padding:14px 18px;font-weight:600;color:var(--navy);cursor:po
 .spinner{display:inline-block;width:14px;height:14px;border:2px solid #c9d3e0;border-top-color:var(--navy2);border-radius:50%;animation:spin .8s linear infinite;vertical-align:-2px;margin-right:6px}
 @keyframes spin{to{transform:rotate(360deg)}}
 footer.disc{text-align:center;font-size:11.5px;color:var(--muted);padding:18px}
-@media(max-width:700px){.mcqgrid{grid-template-columns:1fr}.side{position:static;height:auto}}
 @media(max-width:900px){.split,.autowrap{grid-template-columns:1fr;height:auto}.cand{display:none}}
 
 /* ======================= SHL skin (matches the real AMCAT test screens) ======================= */
@@ -211,7 +162,6 @@ h1,h2,h3{color:#33414a}
 /* question screen: passage / question on the left, options on the right */
 #scrMcq{max-width:none!important;margin:14px auto;padding:0 18px}
 .shl{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr) auto;background:#fff;border:1px solid var(--line);height:calc(100vh - 88px);min-height:470px;box-shadow:0 1px 3px rgba(0,0,0,.05)}
-.shl.pr{height:calc(100vh - 88px)}
 .shl-l{padding:28px 34px;overflow:auto;border-right:1px solid var(--line);background:#fcfcfc;line-height:1.8;color:#3d4347}
 .shl-l p{margin:0 0 16px}
 .shl-r{display:flex;flex-direction:column;min-height:0}
@@ -225,29 +175,15 @@ h1,h2,h3{color:#33414a}
 .ocard:hover{border-color:#c5d3cb}
 .ocard input{display:none}
 .ocard.sel{border-color:var(--green);background:#edf6f0;box-shadow:inset 4px 0 0 var(--green),0 1px 4px rgba(0,0,0,.08);color:#1f3b2b;font-weight:600}
-.prog{width:46px;padding:22px 0;display:flex;flex-direction:column;align-items:center;gap:12px;overflow:auto;background:transparent;scrollbar-width:none}
-.prog::-webkit-scrollbar{display:none}
+.prog{width:46px;padding:22px 0;display:flex;flex-direction:column;align-items:center;overflow:hidden;background:transparent;--avail:calc(100vh - 132px);gap:min(12px, calc(var(--avail) / var(--n, 18) * .3))}
+/* circles shrink so every question always fits: no scrollbar on any screen height */
+.pc{--s:min(22px, calc(var(--avail) / var(--n, 18) * .68));width:var(--s);height:var(--s);border-radius:50%;background:#555b5f;color:#fff;font-size:max(8px, calc(var(--s) * .48));font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .2s}
 /* question / coding screens fill the window exactly: no page scrollbar */
 body.testing{overflow:hidden}
 body.testing footer.disc{display:none}
-.pc{width:22px;height:22px;border-radius:50%;background:#555b5f;color:#fff;font-size:10.5px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .2s}
-.pc.done{background:#d8dbdd;color:#f7f8f8}
-.pc.cur{background:#fff;color:#555b5f;border:1.5px solid #8e9599;box-shadow:0 0 0 3px #eceeef}
-.qmeta{display:flex;align-items:center;gap:8px;font-size:13px;color:#6b7378;margin-bottom:16px}
-.qmeta b{color:#33414a}
-
-/* practice-mode side panel */
-.mcqgrid{grid-template-columns:minmax(0,1fr) 250px;gap:14px}
-.side{top:72px;height:calc(100vh - 88px);border-radius:4px}
-.side-h{background:var(--teal)}
-.side-f .btn{background:var(--green);border-radius:20px;text-transform:uppercase;font-size:12.5px;letter-spacing:.5px}
-.sectabs{border-radius:4px;margin-bottom:10px}
-.stab.on{border-bottom-color:var(--green);background:#f1f8f4}
-
 /* automata: light editor + console like the real test */
 #scrAuto{margin:14px auto;padding:0 18px}
 .autowrap{height:calc(100vh - 88px)}
-.autowrap.pr{height:calc(100vh - 88px)}
 .pane{border-radius:0}
 .ptab.on{background:var(--teal);border-color:var(--teal)}
 .pbody h2{font-size:18px;color:#33414a}
@@ -287,10 +223,6 @@ body.testing footer.disc{display:none}
     <div class="field"><label>Candidate Name</label><input type="text" id="inName" placeholder="Enter your full name" maxlength="40"></div>
     <div class="field"><label>Test ID</label><input type="text" id="inId" placeholder="Enter your Test ID" maxlength="30" autocomplete="off"></div>
     <div class="field"><label>Modules in this assessment</label><div class="checks" id="secChecks"></div></div>
-    <div class="field"><label>Test mode</label><div class="checks">
-      <label><input type="radio" name="mode" value="palette" checked> Practice mode<span class="m">question palette · mark for review · move freely</span></label>
-      <label><input type="radio" name="mode" value="strict"> Real AMCAT mode<span class="m">adaptive · no going back</span></label>
-    </div></div>
     <div class="center" style="margin-top:20px"><button class="btn orange" id="loginBtn">Login &amp; Continue</button></div>
   </div>
 </main>
@@ -335,7 +267,6 @@ body.testing footer.disc{display:none}
 
 <!-- AUTOMATA -->
 <main id="scrAuto" class="hidden" style="max-width:1600px">
-  <div id="autoTabs"></div>
   <div class="autowrap">
     <div class="pane">
       <div class="pane-h"><div class="ptabs" id="ptabs"></div><span style="flex:1"></span><button class="btn outline sm" id="finishAuto">Finish Module</button></div>
@@ -571,11 +502,6 @@ $("#loginBtn").onclick = () => {
   if (!ids.length) { modal("Select a module", "Please select at least one module.", [{label:"OK"}]); return; }
   S.name = name; S.tid = tid;
   S.plan = SECTIONS.filter(s => ids.includes(s.id));
-  S.mode = document.querySelector("input[name=mode]:checked").value;
-  if (S.mode === "palette") {
-    $("#insA").innerHTML = "Each module has a fixed mix of <b>easy, medium and hard</b> questions.";
-    $("#insB").innerHTML = "Use the <b>question palette</b> on the right to jump to any question. <b>Save &amp; Next</b> saves your answer; <b>Mark for Review &amp; Next</b> flags the question to revisit (an answered question marked for review is <b>still evaluated</b>); <b>Clear Response</b> removes your answer.";
-  }
   $("#hdrCand").innerHTML = `<b>${esc(name)}</b><br>${esc(S.tid)}`;
   $("#instrTable").innerHTML = `<tr><th>#</th><th>Module</th><th>Questions</th><th>Time</th></tr>` +
     S.plan.map((s,i) => `<tr><td>${i+1}</td><td>${s.name}</td><td>${s.count}</td><td>${s.time/60} min</td></tr>`).join("") +
@@ -611,9 +537,7 @@ $("#siStart").onclick = () => {
   st.timer = setInterval(tick, 250); tick();
   if (cfg.type === "mcq") {
     $("#subbar").classList.remove("hidden");
-    $("#dots").classList.toggle("hidden", S.mode === "palette");
-    if (S.mode === "palette") startPalette();
-    else { Object.assign(st, {asked:[], used:new Set(), diff:2}); nextQuestion(); }
+    Object.assign(st, {asked:[], used:new Set(), diff:2}); nextQuestion();
     show("scrMcq");
   }
   else startAutomata();
@@ -632,14 +556,7 @@ function finishSection(timedOut){
   st.done = true; clearInterval(st.timer);
   const timeUsed = Math.min(st.cfg.time, (Date.now() - st.startAt)/1000);
   let res;
-  if (st.cfg.type === "mcq" && st.items) {
-    saveSel(); leaveCur();
-    const asked = st.items.map(it => ({ q:it.q, chosen:it.chosen, ok:it.chosen === it.q.a, time:it.time, marked:it.marked }));
-    const correct = asked.filter(a => a.ok).length;
-    const earned = asked.reduce((s,a) => s + (a.ok ? a.q.d : 0), 0);
-    const max = asked.reduce((s,a) => s + a.q.d, 0);
-    res = { cfg:st.cfg, asked, correct, score:scale(earned/max), timeUsed };
-  } else if (st.cfg.type === "mcq") {
+  if (st.cfg.type === "mcq") {
     const correct = st.asked.filter(a => a.ok).length;
     const earned = st.asked.reduce((s,a) => s + (a.ok ? a.q.d : 0), 0);
     // best possible total: the hardest questions the bank can actually supply
@@ -668,14 +585,6 @@ $("#sdNext").onclick = () => {
   else { S.active = false; updFs(); if (isFull()) document.exitFullscreen().catch(()=>{}); renderResults(); }
 };
 
-/* ======================= SECTION TABS ======================= */
-function secTabsHTML(){
-  return "";   // like the real test, modules are not shown while a section is running
-  return `<div class="sectabs">${S.plan.map((s,i) => {
-    const k = i < S.idx ? "done" : i === S.idx ? "on" : "lock";
-    return `<div class="stab ${k}"><b>${esc(s.name)}</b></div>`;
-  }).join("")}</div>`;
-}
 /* ======================= SHL QUESTION LAYOUT ======================= */
 function splitQ(text){ const i = text.indexOf("\n"); return i < 0 ? ["Choose the correct option.", text] : [text.slice(0, i), text.slice(i+1)]; }
 function shlHTML(q, { chosen = null, footer = "", progress = "", meta = "", cls = "" } = {}){
@@ -719,7 +628,7 @@ function nextQuestion(){
 }
 function renderMCQ(){
   const st = S.st, q = st.cur, n = st.asked.length;
-  const prog = `<div class="prog">${Array.from({length:st.cfg.count}, (_,i) => `<span class="pc ${i<n?"done":i===n?"cur":""}">${i+1}</span>`).join("")}</div>`;
+  const prog = `<div class="prog" style="--n:${st.cfg.count}">${Array.from({length:st.cfg.count}, (_,i) => `<span class="pc ${i<n?"done":i===n?"cur":""}">${i+1}</span>`).join("")}</div>`;
   $("#mcqBody").innerHTML = shlHTML(q, { progress: prog, footer: `<button class="btn pill green" id="subAns" disabled>Submit Answer</button>` });
   bindOptions(() => $("#subAns").disabled = false);
   $("#subAns").onclick = submitMCQ;
@@ -731,71 +640,6 @@ function submitMCQ(){
   st.asked.push({ q, chosen, ok, time:(Date.now() - st.qStart)/1000 });
   st.diff = ok ? Math.min(3, st.diff+1) : Math.max(1, st.diff-1);
   nextQuestion();
-}
-
-/* ======================= MCQ: PALETTE MODE ======================= */
-const STATUS = { nv:"Not Visited", na:"Not Answered", an:"Answered", mr:"Marked for Review", am:"Answered & Marked for Review" };
-function startPalette(){
-  const st = S.st, bank = st.cfg.bank;
-  const groups = {};
-  shuffle(bank.map((_,i) => i)).slice(0, st.cfg.count).forEach(i => { const k = bank[i].p || "_" + i; (groups[k] = groups[k] || []).push(i); });
-  st.items = Object.values(groups).flat().map(i => {
-    const q = bank[i];
-    return { q:{ ...q, order: q.ns ? q.o.map((_,k)=>k) : shuffle(q.o.map((_,k)=>k)) }, chosen:null, marked:false, visited:false, time:0 };
-  });
-  st.pos = 0; st.qStart = null;
-  goTo(0);
-}
-const statusOf = it => !it.visited ? "nv" : it.marked ? (it.chosen !== null ? "am" : "mr") : it.chosen !== null ? "an" : "na";
-function saveSel(){ const st = S.st; if (!st || !st.items) return; const sel = document.querySelector("#mcqBody input[name=opt]:checked"); if (sel) st.items[st.pos].chosen = +sel.value; }
-function leaveCur(){ const st = S.st; if (st.qStart != null) st.items[st.pos].time += (Date.now() - st.qStart)/1000; st.qStart = null; }
-function goTo(i){
-  const st = S.st; if (!st) return;
-  leaveCur();
-  st.pos = Math.max(0, Math.min(st.items.length-1, i));
-  st.items[st.pos].visited = true;
-  st.qStart = Date.now();
-  renderPalette();
-}
-function renderPalette(){
-  const st = S.st, it = st.items[st.pos], q = it.q, n = st.items.length;
-  $("#qnum").textContent = `Question ${st.pos+1} of ${n}`;
-  const cnt = { nv:0, na:0, an:0, mr:0, am:0 };
-  st.items.forEach(x => cnt[statusOf(x)]++);
-  const meta = `<div class="qmeta"><b>Question ${st.pos+1}</b> of ${n}<span style="flex:1"></span><span class="marks" title="No negative marking"><span class="p">+1</span><span class="m">−0</span></span>
-      <button class="flag ${it.marked?"on":""}" id="pFlag" title="${it.marked?"Marked for review — click to unmark":"Mark for review"}">⚑</button></div>`;
-  const footer = `<button class="btn pill outline" id="pMark">Mark for Review &amp; Next</button><button class="btn pill outline" id="pClear">Clear Response</button>
-      <span style="flex:1"></span><button class="btn pill outline" id="pPrev" ${st.pos===0?"disabled":""}>Previous</button><button class="btn pill green" id="pSave">${st.pos===n-1?"Save":"Save &amp; Next"}</button>`;
-  const LBL = { an:"Answered", na:"Not Answered", nv:"Not Visited", mr:"Marked", am:"Answered &amp; Marked (evaluated)" };
-  const leg = k => `<div class="${k==="am"?"wide":""}"><span class="pb mini ${k}">${cnt[k]}</span>${LBL[k]}</div>`;
-  const side = `<aside class="side">
-      <div class="side-user"><div class="avatar">${esc((S.name.trim()[0] || "?").toUpperCase())}</div><b>${esc(S.name)}</b></div>
-      <div class="legend">${["an","na","nv","mr","am"].map(leg).join("")}</div>
-      <div class="side-h">${esc(st.cfg.name)}</div>
-      <div class="side-c">Choose a Question</div>
-      <div class="pal">${st.items.map((x,i) => `<button class="pb ${statusOf(x)} ${i===st.pos?"cur":""}" data-i="${i}" title="${STATUS[statusOf(x)]}">${i+1}</button>`).join("")}</div>
-      <div class="side-f"><button class="btn" id="pSubmit">Submit Section</button></div>
-    </aside>`;
-  const main = shlHTML(q, { chosen: it.chosen, meta, footer, cls: "pr" });
-  $("#mcqBody").innerHTML = `<div class="mcqgrid"><div>${secTabsHTML()}${main}</div>${side}</div>`;
-  $("#pFlag").onclick = () => { saveSel(); it.marked = !it.marked; renderPalette(); };
-  bindOptions();
-  const next = () => st.pos < n-1 ? goTo(st.pos+1) : renderPalette();
-  $("#pSave").onclick = () => { saveSel(); it.marked = false; next(); };
-  $("#pMark").onclick = () => { saveSel(); it.marked = true; next(); };
-  $("#pClear").onclick = () => { it.chosen = null; renderPalette(); };
-  $("#pPrev").onclick = () => { saveSel(); goTo(st.pos-1); };
-  document.querySelectorAll("#mcqBody .pal .pb").forEach(b => b.onclick = () => { saveSel(); goTo(+b.dataset.i); });
-  $("#pSubmit").onclick = confirmPaletteSubmit;
-}
-async function confirmPaletteSubmit(){
-  const st = S.st; saveSel(); renderPalette();
-  const cnt = { nv:0, na:0, an:0, mr:0, am:0 };
-  st.items.forEach(x => cnt[statusOf(x)]++);
-  const rows = ["an","am","mr","na","nv"].map(k => `<tr><td>${STATUS[k]}</td><td><b>${cnt[k]}</b></td></tr>`).join("");
-  const ok = await modal("Submit section: " + esc(st.cfg.name) + "?", `<table class="t">${rows}</table>Questions not answered will score zero. You cannot return to this module after submitting.`,
-    [{label:"Go Back", cls:"light", value:false}, {label:"Submit Section", cls:"red", value:true}]);
-  if (ok && S.st === st) finishSection(false);
 }
 
 /* ======================= CODE RUNNER (Web Workers) ======================= */
@@ -971,8 +815,6 @@ function startAutomata(){
 }
 function renderAuto(){
   const st = S.st, P = st.probs[st.cur], p = P.p;
-  $("#autoTabs").innerHTML = secTabsHTML();
-  document.querySelector(".autowrap").classList.toggle("pr", S.mode === "palette");
   $("#ptabs").innerHTML = st.probs.map((x,i) => `<button class="ptab ${i===st.cur?"on":""}" data-i="${i}">Problem ${i+1}<span class="st">${x.submits ? Math.round(x.best*100)+"%" : ""}</span></button>`).join("");
   $("#ptabs").querySelectorAll("button").forEach(b => b.onclick = () => { saveCode(); st.cur = +b.dataset.i; renderAuto(); });
   const vis = p.tests.filter(t => t.v);
@@ -1085,8 +927,8 @@ function updFs(){
   }
 }
 $("#helpBtn").onclick = () => modal("Help", `<ul style="padding-left:18px;margin:0">
-  <li>Select an option card, then click <b>Submit Answer</b>${S.mode === "palette" ? " / <b>Save &amp; Next</b>" : ""}.</li>
-  <li>${S.mode === "palette" ? "Use the question panel on the right to move between questions." : "You cannot go back to a previous question."}</li>
+  <li>Select an option card, then click <b>Submit Answer</b>.</li>
+  <li>You cannot go back to a previous question.</li>
   <li>The timer at the top shows the time left in this section. The section is submitted automatically when it reaches 00 : 00.</li>
   <li>There is no negative marking.</li></ul>`, [{label:"Close", cls:"green"}]);
 $("#fsReturn").onclick = () => {
