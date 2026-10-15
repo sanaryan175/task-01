@@ -178,6 +178,8 @@ h1,h2,h3{color:#33414a}
 .prog{width:46px;padding:22px 0;display:flex;flex-direction:column;align-items:center;overflow:hidden;background:transparent;--avail:calc(100vh - 132px);gap:min(12px, calc(var(--avail) / var(--n, 18) * .3))}
 /* circles shrink so every question always fits: no scrollbar on any screen height */
 .pc{--s:min(22px, calc(var(--avail) / var(--n, 18) * .68));width:var(--s);height:var(--s);border-radius:50%;background:#555b5f;color:#fff;font-size:max(8px, calc(var(--s) * .48));font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .2s}
+.pc.done{background:#d8dbdd;color:#f7f8f8}
+.pc.cur{background:#fff;color:#555b5f;border:1.5px solid #8e9599;box-shadow:0 0 0 3px #eceeef}
 /* question / coding screens fill the window exactly: no page scrollbar */
 body.testing{overflow:hidden}
 body.testing footer.disc{display:none}
