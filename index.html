@@ -281,7 +281,7 @@ h1,h2,h3{color:#33414a}
     <h2 class="center">Candidate Login</h2>
     <p class="center muted" style="margin-top:-4px">Employability Assessment – Practice Mock</p>
     <div class="field"><label>Candidate Name</label><input type="text" id="inName" placeholder="Enter your full name" maxlength="40"></div>
-    <div class="field"><label>Test ID</label><input type="text" id="inId" readonly></div>
+    <div class="field"><label>Test ID</label><input type="text" id="inId" placeholder="Enter your Test ID" maxlength="30" autocomplete="off"></div>
     <div class="field"><label>Modules in this assessment</label><div class="checks" id="secChecks"></div></div>
     <div class="field"><label>Test mode</label><div class="checks">
       <label><input type="radio" name="mode" value="palette" checked> Practice mode<span class="m">question palette · mark for review · move freely</span></label>
@@ -555,28 +555,31 @@ function modal(title, html, buttons){
 const S = { name:"", tid:"", plan:[], idx:0, st:null, results:[], tabSwitches:0, testStart:0, active:false };
 
 /* ======================= LOGIN / INSTRUCTIONS ======================= */
-$("#inId").value = "AM-" + Math.floor(100000 + Math.random()*900000);
 $("#secChecks").innerHTML = SECTIONS.map(s => `<label><input type="checkbox" value="${s.id}" checked> ${s.name}<span class="m">${s.count} ${s.type==="code"?"problems":"Qs"} · ${s.time/60} min</span></label>`).join("");
 $("#loginBtn").onclick = () => {
   const name = $("#inName").value.trim();
-  if (!name) { $("#inName").focus(); $("#inName").style.borderColor = "var(--red)"; return; }
+  const tid = $("#inId").value.trim();
+  $("#inName").style.borderColor = name ? "" : "var(--red)";
+  $("#inId").style.borderColor = tid ? "" : "var(--red)";
+  if (!name) { $("#inName").focus(); return; }
+  if (!tid) { $("#inId").focus(); return; }
   const ids = [...document.querySelectorAll("#secChecks input:checked")].map(i => i.value);
   if (!ids.length) { modal("Select a module", "Please select at least one module.", [{label:"OK"}]); return; }
-  S.name = name; S.tid = $("#inId").value;
+  S.name = name; S.tid = tid;
   S.plan = SECTIONS.filter(s => ids.includes(s.id));
   S.mode = document.querySelector("input[name=mode]:checked").value;
   if (S.mode === "palette") {
     $("#insA").innerHTML = "Each module has a fixed mix of <b>easy, medium and hard</b> questions.";
     $("#insB").innerHTML = "Use the <b>question palette</b> on the right to jump to any question. <b>Save &amp; Next</b> saves your answer; <b>Mark for Review &amp; Next</b> flags the question to revisit (an answered question marked for review is <b>still evaluated</b>); <b>Clear Response</b> removes your answer.";
   }
-  $("#hdrCand").innerHTML = `<b>${esc(name)}</b><br>${S.tid}`;
+  $("#hdrCand").innerHTML = `<b>${esc(name)}</b><br>${esc(S.tid)}`;
   $("#instrTable").innerHTML = `<tr><th>#</th><th>Module</th><th>Questions</th><th>Time</th></tr>` +
     S.plan.map((s,i) => `<tr><td>${i+1}</td><td>${s.name}</td><td>${s.count}</td><td>${s.time/60} min</td></tr>`).join("") +
     `<tr><th></th><th>Total</th><th>${S.plan.reduce((a,s)=>a+s.count,0)}</th><th>${S.plan.reduce((a,s)=>a+s.time,0)/60} min</th></tr>`;
   $("#hdrTitle").textContent = "Instructions";
   show("scrInstr");
 };
-$("#inName").addEventListener("keydown", e => { if (e.key === "Enter") $("#loginBtn").click(); });
+["#inName","#inId"].forEach(id => $(id).addEventListener("keydown", e => { if (e.key === "Enter") $("#loginBtn").click(); }));
 $("#agree").onchange = e => $("#startTestBtn").disabled = !e.target.checked;
 $("#startTestBtn").onclick = () => {
   goFull();
@@ -1145,7 +1148,7 @@ function renderResults(){
     <div class="card" style="display:flex;gap:30px;align-items:center;flex-wrap:wrap">
       <div style="flex:1;min-width:260px">
         <div class="muted" style="font-size:13px">Candidate</div><h2 style="margin-bottom:4px">${esc(S.name)}</h2>
-        <div class="kv">Test ID: <b>${S.tid}</b> · Total time: <b>${fmt(elapsed)}</b> · Violations (tab switch / full-screen exit): <b style="color:${S.tabSwitches?"var(--red)":"inherit"}">${S.tabSwitches}</b></div>
+        <div class="kv">Test ID: <b>${esc(S.tid)}</b> · Total time: <b>${fmt(elapsed)}</b> · Violations (tab switch / full-screen exit): <b style="color:${S.tabSwitches?"var(--red)":"inherit"}">${S.tabSwitches}</b></div>
       </div>
       <div class="center"><div class="muted" style="font-size:13px">Average Module Score</div><div style="font-size:44px;font-weight:700;color:var(--navy)">${total}</div><div style="color:${c};font-weight:600">${b}</div></div>
     </div>
